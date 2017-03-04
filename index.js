@@ -14,6 +14,8 @@ app.get('/', function(request, response) {
 });
 
 app.post('/', function(request, response) {
+	console.log(request);
+
 
 	response.send("SUP");
 });
