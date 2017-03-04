@@ -25,8 +25,7 @@ app.post('/', function(request, response) {
 	console.log(request.body.result);
 	//console.log(request.body.result.action); //for just the action
 	var direction = request.body.result.action;
-	//var distance = request.body.result.distance;
-var distance = 3;
+	var distance = request.body.result.parameters.distance;
 	commands.move(direction, distance);
 
 	response.send("Go Dawgs!");
