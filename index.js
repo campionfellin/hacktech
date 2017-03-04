@@ -22,7 +22,7 @@ app.get('/', function(request, response) {
 });
 
 app.post('/', function(request, response) {
-	console.log(request.body.result);
+	//console.log(request.body.result);
 	//console.log(request.body.result.action); //for just the action
 	var action = request.body.result.action;
 	console.log(action);
