@@ -26,12 +26,15 @@ app.post('/', function(request, response) {
 	//console.log(request.body.result.action); //for just the action
 	var action = request.body.result.action;
 	if (action == "stop") {
+		console.log("stopping");
 		commands.stop();
 	} else if (action == 'turn') {
+		console.log("turning");
 		var direction = request.body.result.parameters.direction;
 		var degrees = request.body.result.parameters.degrees;
 		commands.turn(direction, degrees);
 	} else {
+		console.log("moving");
 		var direction = request.body.result.parameters.direction;
 		var distance = request.body.result.parameters.distance;
 		commands.move(direction, distance);
