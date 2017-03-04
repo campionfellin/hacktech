@@ -13,7 +13,10 @@ app.get('/', function(request, response) {
   response.send('hey');
 });
 
+app.post('/', function(request, response) {
 
+	response.send("SUP");
+});
 
 
 app.listen(app.get('port'), function() {
