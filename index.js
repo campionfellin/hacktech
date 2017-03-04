@@ -3,8 +3,6 @@ var app = express();
 var create = require('create2');
 var io = require('socket.io')(server);
 var request = require('request');
-var ApiAiAssistant = require('actions-on-google').ApiAiAssistant;
-
 
 app.set('port', process.env.PORT || 3000);
 var server = app.listen(3000, () => {
@@ -20,7 +18,7 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({ extended: false }))
 
 // parse application/json
-app.use(bodyParser.json());
+app.use(bodyParser.json())
 // views is directory for all template files
 app.set('views', __dirname + '/views/');
 app.set('view engine', 'ejs');
@@ -32,7 +30,7 @@ app.get('/', function(request, response) {
 var myCommand = "";
 var hasStarted = false;
 app.post('/', function(request, response) {
-    const assistant = new ApiAiAssistant({request: request, response: response});
+	//console.log(request.body.result);
 	//console.log(request.body.result.action); //for just the action
 	if (!hasStarted) {
 		hasStarted = true;
@@ -41,32 +39,27 @@ app.post('/', function(request, response) {
 	}
 	myCommand = "";
 	if (request.body.result) {
-        var command;
+
 		var action = request.body.result.action;
 		console.log(action);
 		if (action == "stop") {
 			console.log("stopping");
 			myCommand = "stop";
 			commands.stop();
-            command="Affirmative. Stopping";
 		} else if (action == "turn") {
 			console.log("turning");
 			var direction = request.body.result.parameters.direction;
 			var degrees = request.body.result.parameters.degrees;
 			commands.turn(direction, degrees);
-            command="Affirmative. turning "+degrees+".";
 		} else {
 			console.log("moving");
 			myCommand = "move";
 			var direction = request.body.result.parameters.direction;
 			var distance = request.body.result.parameters.distance;
 			commands.move(direction, distance);
-            command="Affirmative. moving "+direction+" for "+distance + " seconds.";
 		}
 	}
-    assistant.ask(command+' What is your next command?',
-        ['Say a command', 'command me', 'instructions']);
-	//response.send("Go Dawgs!");
+	response.send("Go Dawgs!");
 });
 
 
