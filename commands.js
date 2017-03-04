@@ -5,7 +5,7 @@ module.exports = {
 
 	},
 	stop: function() {
-		console.log("OH NO!");
+		console.log("OH NO stop!");
 	}
 
 
