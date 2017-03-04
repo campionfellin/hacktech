@@ -1,6 +1,6 @@
 module.exports = {
 	move: function(direction, distance) {
-		console.log("moving in the " + direction + " 12312313123direction");
+		console.log("moving in the " + direction + " 4444direction");
 		console.log("moving " + distance + " feet");
 
 	},
