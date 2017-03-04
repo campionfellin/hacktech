@@ -20,7 +20,8 @@ app.get('/', function(request, response) {
 });
 
 app.post('/', function(request, response) {
-	console.log(request.body.result.action);
+	console.log(request.body.result);
+	//console.log(request.body.result.action); //for just the action
 	console.log("hey123");
 
 	response.send("SUP");
