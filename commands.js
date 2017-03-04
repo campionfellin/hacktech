@@ -10,7 +10,4 @@ module.exports = {
 	turn: function(direction, degrees) {
 		console.log("rotating " + direction + " " + degrees + " degrees");
 	}
-
-
-
 }
