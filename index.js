@@ -4,6 +4,7 @@ var create = require('create2');
 var io = require('socket.io')(server);
 var request = require('request');
 
+app.set('port', process.env.PORT || 3000);
 var server = app.listen(3000, () => {
     console.log('Example app listening on port 3000!')
 });
@@ -68,7 +69,7 @@ app.get('/control', function(request, response) {
 
 
 app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', 3000);
+  console.log('Node app is running on port', app.get('port'));
 });
 
 function start() {
