@@ -3,15 +3,18 @@ var app = express();
 var create = require('create2');
 var io = require('socket.io')(server);
 var request = require('request');
+var robot2 = require('robotjs');
 
 app.set('port', process.env.PORT || 3000);
-var server = app.listen(3000, () => {
-    console.log('Example app listening on port 3000!')
-});
+//var server = app.listen(3000, () => {
+  //  console.log('Example app listening on port 3000!')
+//});
 var bodyParser = require('body-parser');
 
 var commands = require('./commands');
 
+var robot, turnRobot, stopTurn, stopLogic, driveLogic;
+var driveStraight = 32768;
 
 app.use(express.static(__dirname + '/public'));
 // parse application/x-www-form-urlencoded
@@ -29,13 +32,13 @@ app.get('/', function(request, response) {
 
 var myCommand = "";
 var hasStarted = false;
+start();
 app.post('/', function(request, response) {
 	//console.log(request.body.result);
 	//console.log(request.body.result.action); //for just the action
 	if (!hasStarted) {
 		hasStarted = true;
-		start();
-		
+		//start();
 	}
 	myCommand = "";
 	if (request.body.result) {
@@ -45,21 +48,38 @@ app.post('/', function(request, response) {
 		if (action == "stop") {
 			console.log("stopping");
 			myCommand = "stop";
-			commands.stop();
+			stopLogic();
+			/*
+			setInterval(function() {
+
+				robot2.typeString("ss");
+				robot2.keyTap("enter");
+				//start();
+				commands.stop();
+			}, 3000); */
+
 		} else if (action == "turn") {
 			console.log("turning");
+			myCommand = "turn";
 			var direction = request.body.result.parameters.direction;
 			var degrees = request.body.result.parameters.degrees;
 			commands.turn(direction, degrees);
-		} else {
+		} else if (action == "move") {
 			console.log("moving");
 			myCommand = "move";
+			driveLogic(50, driveStraight);
 			var direction = request.body.result.parameters.direction;
 			var distance = request.body.result.parameters.distance;
 			commands.move(direction, distance);
 		}
 	}
-	response.send("Go Dawgs!");
+	response.send("");
+});
+
+app.post('/update', function(request, response) {
+	//console.log("this is the data");
+	//console.log(request.body);
+
 });
 
 
@@ -68,7 +88,7 @@ app.get('/control', function(request, response) {
 });
 
 
-app.listen(app.get('port'), function() {
+var server = app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
 
@@ -79,14 +99,13 @@ function start() {
 
 //chau robot code:
 
-var robot, turnRobot, stopTurn;
 var headers = {
     'User-Agent': 'Super Agent/0.0.1',
     'Content-Type': 'application/x-www-form-urlencoded'
 }
 
 var options = {
-    url: 'http://localhost:3000',
+    url: 'http://localhost:3000/update',
     method: 'POST',
     headers: headers,
     form: {
@@ -106,7 +125,6 @@ var options = {
     }
 }
 
-var driveStraight = 32768;
 
 //Main Program:
 function main(r) {
@@ -125,8 +143,7 @@ function main(r) {
         if (robot.data.charger || robot.data.docked) { robot.start(); run = 0; }
         else {
             //robot.play(0);
-            driveLogic();
-          
+            //driveLogic();
         } robot.onChange = onchange;
     }
 
@@ -177,9 +194,13 @@ function main(r) {
             }
         }
     }
+    stopLogic = function () {
+    	console.log("in stop logic");
+    	robot.drive(0,0);
+    }
 
     //Logic to Start and Stop Moving Robot:
-    function driveLogic() {
+    driveLogic = function () {
         console.log('MOVING')
         //We're in user-control (full mode) and can control the robot. (Your main program would be here!)
         if (robot.data.lightBumper || robot.data.bumpLeft || robot.data.bumpRight) robot.driveSpeed(0, 0); //Disable motors.
@@ -187,9 +208,13 @@ function main(r) {
         if (robot.data.clean || robot.data.docked) { robot.driveSpeed(0, 0); robot.start() } //Back to PASSIVE mode.
         // console.log('r data:', r.data);
         if (myCommand == "move") {
+        	console.log("in move functions");
         	robot.drive(50, driveStraight);
         } else if (myCommand == "stop") {
+        	console.log("in stop function");
         	robot.drive(0,0);
+        } else {
+        	console.log("NO COMMAND SET");
         }
 
         //robot.drive(50, driveStraight);
@@ -297,6 +322,8 @@ function handleInput(robot) {
             turnRobot(); //Turn Robot.
         } else if (text == "s") {
             stopTurn(); //Stop Turning.
+        } else if (text == "ss") {
+        	stopLogic();
         }
     });
 }
