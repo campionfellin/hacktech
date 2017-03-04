@@ -17,7 +17,7 @@ app.post('/', function(request, response) {
 	console.log(request);
 
 
-	response.send(request);
+	response.send("SUP");
 });
 
 
