@@ -27,6 +27,10 @@ app.post('/', function(request, response) {
 	var action = request.body.result.action;
 	if (action == "stop") {
 		commands.stop();
+	} else if (action == 'turn') {
+		var direction = request.body.result.parameters.direction;
+		var degrees = request.body.result.parameters.degrees;
+		commands.turn(direction, degrees);
 	} else {
 		var direction = request.body.result.parameters.direction;
 		var distance = request.body.result.parameters.distance;

@@ -6,6 +6,9 @@ module.exports = {
 	},
 	stop: function() {
 		console.log("OH NO!");
+	},
+	turn: function(direction, degrees) {
+		console.log("rotating " + direction + " " + degrees + " degrees");
 	}
 
 
