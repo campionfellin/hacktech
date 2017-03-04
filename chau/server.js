@@ -1,88 +1,43 @@
 var express = require('express');
 var app = express();
-var create = require('create2');
-var io = require('socket.io')(server);
 var request = require('request');
-
+var bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+    extended: true
+}));
 var server = app.listen(3000, () => {
     console.log('Example app listening on port 3000!')
 });
-var bodyParser = require('body-parser');
+app.use(express.static('public'))
 
-var commands = require('./commands');
+var io = require('socket.io')(server);
 
-
-app.use(express.static(__dirname + '/public'));
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
-
-// parse application/json
-app.use(bodyParser.json())
-// views is directory for all template files
-app.set('views', __dirname + '/views/');
-app.set('view engine', 'ejs');
-
-app.get('/', function(request, response) {
-  response.send("hi");
+app.get('/', function (req, res) {
+    res.sendFile(__dirname + '/index.html');
 });
 
-var myCommand = "";
-var hasStarted = false;
-app.post('/', function(request, response) {
-	//console.log(request.body.result);
-	//console.log(request.body.result.action); //for just the action
-	if (!hasStarted) {
-		hasStarted = true;
-		start();
-		
-	}
-	myCommand = "";
-	if (request.body.result) {
-
-		var action = request.body.result.action;
-		console.log(action);
-		if (action == "stop") {
-			console.log("stopping");
-			myCommand = "stop";
-			commands.stop();
-		} else if (action == "turn") {
-			console.log("turning");
-			var direction = request.body.result.parameters.direction;
-			var degrees = request.body.result.parameters.degrees;
-			commands.turn(direction, degrees);
-		} else {
-			console.log("moving");
-			myCommand = "move";
-			var direction = request.body.result.parameters.direction;
-			var distance = request.body.result.parameters.distance;
-			commands.move(direction, distance);
-		}
-	}
-	response.send("Go Dawgs!");
-});
-
-
-app.get('/control', function(request, response) {
-	start();
-});
-
-
-app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', 3000);
-});
-
-function start() {
-    create.prompt(function (p) { create.open(p, main) });
-}
-
-
-//chau robot code:
-
-var robot, turnRobot, stopTurn;
 var headers = {
     'User-Agent': 'Super Agent/0.0.1',
     'Content-Type': 'application/x-www-form-urlencoded'
 }
+
+app.post('/', function (req, res) {
+    // angle
+    // cliffLeft, cliffFrontLeft, cliffFrontRight, cliffRight
+    // bumpLeft, bumpRight
+    // dropLeft, dropRight
+    // wall (doesn't work)
+    // velocity of each drive wheel
+    // left/right encoder counts
+    res.json({ status: "success" });
+    // console.log('req.body:', req.body);
+    io.emit('data has been sent', req.body);
+});
+
+
+var create = require('create2');
+var robot, turnRobot, stopTurn;
 
 var options = {
     url: 'http://localhost:3000',
@@ -105,6 +60,10 @@ var options = {
     }
 }
 
+function start() {
+    create.prompt(function (p) { create.open(p, main) });
+}
+
 var driveStraight = 32768;
 
 //Main Program:
@@ -123,9 +82,8 @@ function main(r) {
     robot.onChange = function () {
         if (robot.data.charger || robot.data.docked) { robot.start(); run = 0; }
         else {
-            //robot.play(0);
+            //  robot.play(0);
             driveLogic();
-          
         } robot.onChange = onchange;
     }
 
@@ -185,13 +143,7 @@ function main(r) {
         else robot.driveSpeed(robot.data.dropLeft ? 0 : 100, robot.data.dropRight ? 0 : 100); //Enable motors if wheels are up.
         if (robot.data.clean || robot.data.docked) { robot.driveSpeed(0, 0); robot.start() } //Back to PASSIVE mode.
         // console.log('r data:', r.data);
-        if (myCommand == "move") {
-        	robot.drive(50, driveStraight);
-        } else if (myCommand == "stop") {
-        	robot.drive(0,0);
-        }
-
-        //robot.drive(50, driveStraight);
+        // robot.drive(300, driveStraight);
     }
 
     //Enable and disable undocking timer:
@@ -300,3 +252,4 @@ function handleInput(robot) {
     });
 }
 
+start();
