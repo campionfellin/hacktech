@@ -58,7 +58,11 @@ app.post('/', function(request, response) {
 			commands.turn(direction, degrees);
 			degrees = (degrees / 360) * 2000;
 			console.log(degrees);
-			turnLogic(0, degrees);
+			turnLogic(degrees);
+			setTimeout(function() {
+				stopLogic();
+			}, 10000);
+			
 			command="Affirmative. turning "+degrees+".";
 		} else if (action == "move") {
 			console.log("moving");
@@ -80,7 +84,7 @@ app.post('/', function(request, response) {
 	}
 	 assistant.ask(command+' What is your next command?',
         ['Say a command', 'command me', 'instructions']);
-	response.send("");
+	//response.send("");
 });
 
 app.post('/update', function(request, response) {
@@ -207,7 +211,9 @@ function main(r) {
     }
 
     turnLogic = function (degrees) {
-    	robot.drive(0, degrees);
+    	robot.drive(20, degrees);
+
+    	//turnRobot();
     }
 
     //Logic to Start and Stop Moving Robot:
