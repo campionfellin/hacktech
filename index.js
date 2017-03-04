@@ -71,11 +71,19 @@ app.post('/', function(request, response) {
 		} else if (action == "move") {
 			console.log("moving");
 			myCommand = "move";
-			driveLogic(50, driveStraight);
+			
 			var direction = request.body.result.parameters.direction;
 			var distance = request.body.result.parameters.distance;
+			distance = distance * 304.8;
+			var duration = distance / 50;
+
+			driveLogic(50, driveStraight);
+			setInterval(function() {
+				stopLogic();
+			}, duration);
+
 			commands.move(direction, distance);
-			 command="Affirmative. moving "+direction+" for "+distance + " seconds.";
+			command="Affirmative. moving "+direction+" for "+distance + " seconds.";
 		}
 	}
 	 assistant.ask(command+' What is your next command?',
