@@ -26,7 +26,7 @@ app.post('/', function(request, response) {
 	//console.log(request.body.result.action); //for just the action
 	var action = request.body.result.action;
 	if (action == "stop") {
-		console.log("stop!");
+		commands.stop();
 	} else {
 		var direction = request.body.result.parameters.direction;
 		var distance = request.body.result.parameters.distance;
