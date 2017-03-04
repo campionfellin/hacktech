@@ -14,7 +14,7 @@ var bodyParser = require('body-parser');
 
 var commands = require('./commands');
 
-var robot, turnRobot, stopTurn, stopLogic, driveLogic;
+var robot, turnRobot, stopTurn, stopLogic, driveLogic, turnLogic;
 var driveStraight = 32768;
 
 app.use(express.static(__dirname + '/public'));
@@ -57,7 +57,8 @@ app.post('/', function(request, response) {
 			var degrees = request.body.result.parameters.degrees;
 			commands.turn(direction, degrees);
 			degrees = (degrees / 360) * 2000;
-			driveStraight(0, degrees);
+			console.log(degrees);
+			turnLogic(0, degrees);
 			command="Affirmative. turning "+degrees+".";
 		} else if (action == "move") {
 			console.log("moving");
@@ -203,6 +204,10 @@ function main(r) {
     stopLogic = function () {
     	//console.log("in stop logic");
     	robot.drive(0,0);
+    }
+
+    turnLogic = function (degrees) {
+    	robot.drive(0, degrees);
     }
 
     //Logic to Start and Stop Moving Robot:
