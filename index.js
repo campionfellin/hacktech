@@ -2,7 +2,9 @@ var express = require('express');
 var app = express();
 
 app.set('port', (process.env.PORT || 5000));
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+
+var commands = require('./commands');
 
 
 app.use(express.static(__dirname + '/public'));
@@ -22,6 +24,9 @@ app.get('/', function(request, response) {
 app.post('/', function(request, response) {
 	console.log(request.body.result);
 	//console.log(request.body.result.action); //for just the action
+
+	commands.move("left", 3);
+
 	console.log("hey123");
 
 	response.send("SUP");
