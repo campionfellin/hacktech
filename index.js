@@ -80,7 +80,7 @@ app.post('/', function(request, response) {
 			driveLogic(50, driveStraight);
 			setInterval(function() {
 				stopLogic();
-			}, duration);
+			}, duration * 1000);
 
 			commands.move(direction, distance);
 			command="Affirmative. moving "+direction+" for "+distance + " seconds.";
@@ -210,7 +210,7 @@ function main(r) {
         }
     }
     stopLogic = function () {
-    	console.log("in stop logic");
+    	//console.log("in stop logic");
     	robot.drive(0,0);
     }
 
