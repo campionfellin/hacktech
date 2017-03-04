@@ -24,12 +24,22 @@ app.get('/', function(request, response) {
 app.post('/', function(request, response) {
 	console.log(request.body.result);
 	//console.log(request.body.result.action); //for just the action
-	var direction = request.body.result.action;
+	var action = request.body.result.action;
+	
+
+	var direction = request.body.result.action.parameters.direction;
+
+
+
+
+
 	var distance = request.body.result.parameters.distance;
 	commands.move(direction, distance);
-
 	response.send("Go Dawgs!");
 });
+
+
+
 
 
 app.listen(app.get('port'), function() {
