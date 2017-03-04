@@ -24,12 +24,12 @@ app.get('/', function(request, response) {
 app.post('/', function(request, response) {
 	console.log(request.body.result);
 	//console.log(request.body.result.action); //for just the action
+	var direction = request.body.result.action;
+	//var distance = request.body.result.distance;
+var distance = 3;
+	commands.move(direction, distance);
 
-	commands.move("left", 3);
-
-	console.log("hey123");
-
-	response.send("SUP");
+	response.send("Go Dawgs!");
 });
 
 
