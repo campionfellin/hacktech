@@ -4,6 +4,7 @@ var create = require('create2');
 var io = require('socket.io')(server);
 var request = require('request');
 var robot2 = require('robotjs');
+var ApiAiAssistant = require('actions-on-google').ApiAiAssistant;
 
 app.set('port', process.env.PORT || 3000);
 //var server = app.listen(3000, () => {
@@ -34,6 +35,7 @@ var myCommand = "";
 var hasStarted = false;
 start();
 app.post('/', function(request, response) {
+	    const assistant = new ApiAiAssistant({request: request, response: response});
 	//console.log(request.body.result);
 	//console.log(request.body.result.action); //for just the action
 	if (!hasStarted) {
@@ -49,6 +51,7 @@ app.post('/', function(request, response) {
 			console.log("stopping");
 			myCommand = "stop";
 			stopLogic();
+			command="Affirmative. Stopping";
 			/*
 			setInterval(function() {
 
@@ -64,6 +67,7 @@ app.post('/', function(request, response) {
 			var direction = request.body.result.parameters.direction;
 			var degrees = request.body.result.parameters.degrees;
 			commands.turn(direction, degrees);
+			command="Affirmative. turning "+degrees+".";
 		} else if (action == "move") {
 			console.log("moving");
 			myCommand = "move";
@@ -71,8 +75,11 @@ app.post('/', function(request, response) {
 			var direction = request.body.result.parameters.direction;
 			var distance = request.body.result.parameters.distance;
 			commands.move(direction, distance);
+			 command="Affirmative. moving "+direction+" for "+distance + " seconds.";
 		}
 	}
+	 assistant.ask(command+' What is your next command?',
+        ['Say a command', 'command me', 'instructions']);
 	response.send("");
 });
 
