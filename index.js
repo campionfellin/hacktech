@@ -13,7 +13,7 @@ app.get('/', function(request, response) {
   response.send('hey');
 });
 
-app.post('/webhook', function(request, response) {
+app.post('/', function(request, response) {
 	console.log(request);
 	console.log("hey123");
 
