@@ -5,6 +5,7 @@ var io = require('socket.io')(server);
 var request = require('request');
 var robot2 = require('robotjs');
 var ApiAiAssistant = require('actions-on-google').ApiAiAssistant;
+var timer;
 
 app.set('port', process.env.PORT || 3000);
 //var server = app.listen(3000, () => {
@@ -59,7 +60,7 @@ app.post('/', function(request, response) {
 			degrees = (degrees / 360) * 2000;
 			console.log(degrees);
 			turnLogic(degrees);
-			setTimeout(function() {
+			timer=setTimeout(function() {
 				stopLogic();
 			}, 10000);
 			
@@ -68,13 +69,13 @@ app.post('/', function(request, response) {
 			console.log("moving");
 			myCommand = "move";
 			
-			var direction = request.body.result.parameters.direction;
+			direction = request.body.result.parameters.direction;
 			var distance = request.body.result.parameters.distance;
 			distance = distance * 304.8;
 			var duration = distance / 50;
 
 			driveLogic(50, driveStraight);
-			setInterval(function() {
+			timer=setInterval(function() {
 				stopLogic();
 			}, duration * 1000);
 
@@ -105,6 +106,13 @@ var server = app.listen(app.get('port'), function() {
 
 function start() {
     create.prompt(function (p) { create.open(p, main) });
+}
+
+function clearTimer() {
+    if (timer) {
+        clearTimeout(timer);
+        timer = 0;
+    }
 }
 
 
@@ -207,18 +215,22 @@ function main(r) {
     }
     stopLogic = function () {
     	//console.log("in stop logic");
+        clearTimer();
     	robot.drive(0,0);
-    }
+    };
 
     turnLogic = function (degrees) {
-    	robot.drive(20, degrees);
-
+        console.log("turnlogic "+degrees);
+        clearTimer();
+        robot.driveSpeed(-100,100);
+        //robot.drive(20, degrees);
     	//turnRobot();
-    }
+    };
 
     //Logic to Start and Stop Moving Robot:
     driveLogic = function () {
-        console.log('MOVING')
+        clearTimer();
+        console.log('MOVING');
         //We're in user-control (full mode) and can control the robot. (Your main program would be here!)
         if (robot.data.lightBumper || robot.data.bumpLeft || robot.data.bumpRight) robot.driveSpeed(0, 0); //Disable motors.
         else robot.driveSpeed(robot.data.dropLeft ? 0 : 100, robot.data.dropRight ? 0 : 100); //Enable motors if wheels are up.
@@ -235,7 +247,7 @@ function main(r) {
         }
 
         //robot.drive(50, driveStraight);
-    }
+    };
 
     //Enable and disable undocking timer:
     var dTmr; function setUndock(e) {
