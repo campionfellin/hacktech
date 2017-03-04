@@ -1,0 +1,81 @@
+ html {}
+ 
+ .dashboard-icon {
+     width: 50px;
+     height: 50px;
+     vertical-align: bottom;
+ }
+ 
+ #controls {
+     position: relative;
+     width: 200px;
+     height: 200px;
+ }
+ 
+ #bumpers {
+     text-align: center;
+ }
+
+#ctrl-arr-left {
+    padding-left: 20px;
+}
+ #ctrl-arr-right {
+     padding-left: 44px;
+ }
+
+ .green-arr {
+     color: green;
+ }
+
+ .red-arr {
+     color: red;
+ }
+
+ /* copy */
+ svg {
+     border-radius: 25px;
+     height: 300px;
+     width: 300px;
+ }
+ 
+ circle {
+     stroke-width: 4px;
+     fill: transparent;
+ }
+ 
+ #gray {
+     stroke: #000;
+ }
+ 
+ #top-left {
+     stroke: green;
+     stroke-dasharray: 58, 284;
+     /* length of arc, circumference of circle */
+     stroke-dashoffset: -153.75;
+     /* offset of arc from start point (1/2 arc length + 1/4 circumference) */
+ }
+ 
+ #orange {
+     stroke: black;
+     stroke-dasharray: 35.5, 284;
+     /* length of arc, circumference of circle */
+     stroke-dashoffset: -88.75;
+     /* offset of arc from start point (1/2 arc length + 1/4 circumference) */
+ }
+ 
+ #blue {
+     stroke: black;
+     stroke-dasharray: 35.5, 284;
+     /* length of arc, circumference of circle */
+     stroke-dashoffset: -17.75;
+     /* offset of  arc from start point (1/2 of arc length) */
+ }
+ 
+ #top-right {
+     stroke: green;
+     stroke-dasharray: 58, 284;
+     /* length of arc, circumference of circle */
+     stroke-dashoffset: -210.75;
+     /* offset of arc from start point (1/2 arc length + 3/4 circumference) */
+ }
+ /* end copy */
