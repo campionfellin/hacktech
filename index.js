@@ -35,13 +35,10 @@ var myCommand = "";
 var hasStarted = false;
 start();
 app.post('/', function(request, response) {
-	    const assistant = new ApiAiAssistant({request: request, response: response});
+	const assistant = new ApiAiAssistant({request: request, response: response});
 	//console.log(request.body.result);
 	//console.log(request.body.result.action); //for just the action
-	if (!hasStarted) {
-		hasStarted = true;
-		//start();
-	}
+
 	myCommand = "";
 	if (request.body.result) {
 
@@ -52,14 +49,6 @@ app.post('/', function(request, response) {
 			myCommand = "stop";
 			stopLogic();
 			command="Affirmative. Stopping";
-			/*
-			setInterval(function() {
-
-				robot2.typeString("ss");
-				robot2.keyTap("enter");
-				//start();
-				commands.stop();
-			}, 3000); */
 
 		} else if (action == "turn") {
 			console.log("turning");
@@ -67,6 +56,8 @@ app.post('/', function(request, response) {
 			var direction = request.body.result.parameters.direction;
 			var degrees = request.body.result.parameters.degrees;
 			commands.turn(direction, degrees);
+			degrees = (degrees / 360) * 2000;
+			driveStraight(0, degrees);
 			command="Affirmative. turning "+degrees+".";
 		} else if (action == "move") {
 			console.log("moving");
