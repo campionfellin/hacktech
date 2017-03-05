@@ -91,11 +91,11 @@ app.post('/', function(request, response) {
 			}, duration * 1000);
 
 			commands.move(direction, distance);
-			command="Affirmative. moving "+direction+" for "+distance + " seconds.";
+			command="Affirmative. moving "+direction+" for "+ Math.floor(distance / 304.8) + " feet.";
 		}
 	}
 		if (command != "") {
-	 		assistant.ask(command+' What is your next command?',
+	 		assistant.ask(command+'Next command?',
         	['Say a command', 'command me', 'instructions']);
 		}
 });
