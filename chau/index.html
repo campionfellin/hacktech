@@ -182,6 +182,16 @@
         </ul>
       </div>
     </div>
+
+      <!-- campion changes below -->
+
+    <div style="position: relative;">
+        <canvas id="path_layer"  style="position: absolute; left: 0; top: 0; z-index: 0; border:1px solid #d3d3d3;"></canvas>
+        <canvas id="robot_body_layer" style="position: absolute; left: 0; top: 0; z-index: 1; border:1px solid #d3d3d3;"></canvas>
+        <canvas id="text_layer" style="position: absolute; left: 0; top: 0; z-index: 2; border:1px solid #d3d3d3;"></canvas>
+    </div>
+
+
   </div>
 
   <div id="my-canvas" style="position: relative;">
@@ -631,6 +641,20 @@ fetch('https://e3438682.ngrok.io', {
       // console.log('distance:', distance);
     });
 
+
+      var c = document.getElementById("path_layer");
+      console.log(c);
+      var totalWidth = 300;
+      var totalHeight = 150;
+      //c.style = "background-color:red";
+      var ctx=c.getContext("2d");
+      var pastHeight = totalHeight;
+      var pastWidth = totalWidth/2
+      ctx.beginPath();
+      ctx.moveTo(totalWidth/2,totalHeight);
+      ctx.lineTo(totalWidth/2,totalHeight/2);
+      ctx.stroke();
+
     socket.on('data has been sent', function (call) {
       // console.log(call);
       var booleans = { "false": false, "true": true };
@@ -651,6 +675,21 @@ fetch('https://e3438682.ngrok.io', {
 
       if (call.distance)
         document.getElementById('distance-data').innerHTML = call.distance;
+
+      if (call.battery)
+        document.getElementById('battery-data').innerHTML = call.battery;
+      
+      if (call.distance) {
+        document.getElementById('distance-data').innerHTML = call.distance;
+        ctx.beginPath();
+        ctx.moveTo(pastWidth,pastHeight);
+
+        ctx.lineTo(pastWidth,pastHeight - distance / 10);
+        ctx.stroke();
+
+
+
+      }
 
       if (call.angle) {
         document.getElementById('angle-data').innerHTML = call.angle;
@@ -735,7 +774,7 @@ fetch('https://e3438682.ngrok.io', {
 
         lastEncLeft = call.leftEncoder;
       }
-
+      
       if (booleans[call.lightBumpLeft]) {
         document.getElementById('light-bump-left-data').innerHTML = 'WALL';
       } else {
@@ -792,7 +831,7 @@ fetch('https://e3438682.ngrok.io', {
       //   document.getElementById('light-bump-right-data').innerHTML = call.lightBumpRight;
       // }
 
-      if (call.rightEncoder)
+      if (call.rightEncoder) {
         document.getElementById('right-encoder-data').innerHTML = call.rightEncoder;
 
       if (lastEncRight < call.rightEncoder) {
@@ -802,12 +841,19 @@ fetch('https://e3438682.ngrok.io', {
       }
 
       lastEncLeft = call.leftEncoder;
+      }
+
     });
     var pathLayerContext;
 
     drawStep(0, 0, 0, 'quick', '');
     drawStep(0, 0, 0, 'quick', '');
   </script>
+
+
+
+
+
   <script src="https://use.fontawesome.com/26c56752cb.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
 </body>
