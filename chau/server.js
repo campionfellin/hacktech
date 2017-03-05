@@ -91,6 +91,8 @@ var options = {
         velocity: 0,
         leftEncoder: 0,
         rightEncoder: 0,
+        dropLeft: false,
+        dropRight: false
     }
 }
 
@@ -357,6 +359,7 @@ function handleInput(robot) {
         } else if (text == "s") {
             stopTurn(); //Stop Turning.
         } else if (text == "b") {
+            console.log(robot.data.charge);
             console.log(robot.data.charge / robot.data.maxCharge * 100);
         }
     });

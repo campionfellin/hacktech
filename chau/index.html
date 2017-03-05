@@ -348,10 +348,15 @@ https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
           ctx.moveTo(pastWidth,pastHeight);
           console.log(call.angle);
 
-          var ourAngle = call.angle * (Math.PI / 180);
+          var tempAngle = parseInt(call.angle);
+          if (tempAngle < 5 && tempAngle > -5) {
+            tempAngle = 0;
+          }
 
-          var newX = pastWidth + Math.cos(ourAngle) * call.distance;
-          var newY = pastHeight + Math.sin(ourAngle) * call.distance;
+          var ourAngle = tempAngle * (Math.PI / 180);
+
+          var newX = pastWidth + Math.sin(ourAngle) * call.distance;
+          var newY = pastHeight + Math.cos(ourAngle) * call.distance;
 
           console.log(newX);
           console.log(newY);
