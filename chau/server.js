@@ -106,10 +106,17 @@ var driveStraight = 32768;
 
 //Main Program:
 function main(r) {
+
+
+
+    console.log("In here");
+
     robot = r; handleInput(robot);
 
     //Enter full Mode:
     robot.full(); var run = 1;
+
+
 
     //setTimeout(function(){robot.showText("Hello World!", 500, true)}, 500);
 
@@ -127,7 +134,10 @@ function main(r) {
 
     //Handle onChange Events:
     function onchange(chg) {
+
+
         if (robot.data.mode == 3 && run == 1) { //full mode:
+
             //lightBumper is a macro for all light bump sensors (lightBumpLeft, lightBumpRight, etc)
             //Unfortunately, no similar macro exists for cliff sensors or bumper switches due to the way the data is delivered.
             options.form.bumpLeft = chg.bumpLeft || false;
@@ -345,6 +355,8 @@ function handleInput(robot) {
             turnRobot(); //Turn Robot.
         } else if (text == "s") {
             stopTurn(); //Stop Turning.
+        } else if (text == "b") {
+            console.log(robot.data.charge / robot.data.maxCharge * 100);
         }
     });
 }

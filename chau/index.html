@@ -190,9 +190,9 @@
       <!-- campion changes below -->
 
     <div style="position: relative;">
-        <canvas id="path_layer"  style="position: absolute; left: 0; top: 0; z-index: 0; border:1px solid #d3d3d3;"></canvas>
-        <canvas id="robot_body_layer" style="position: absolute; left: 0; top: 0; z-index: 1; border:1px solid #d3d3d3;"></canvas>
-        <canvas id="text_layer" style="position: absolute; left: 0; top: 0; z-index: 2; border:1px solid #d3d3d3;"></canvas>
+        <canvas id="path_layer"  style="position: absolute; left: 0; top: 0; z-index: 0; border:1px solid #d3d3d3; width:100%"></canvas>
+       <!-- <canvas id="robot_body_layer" style="position: absolute; left: 0; top: 0; z-index: 1; border:1px solid #d3d3d3;"></canvas>
+        <canvas id="text_layer" style="position: absolute; left: 0; top: 0; z-index: 2; border:1px solid #d3d3d3;"></canvas> -->
     </div>
 
 
@@ -382,16 +382,17 @@ https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
 
       var c = document.getElementById("path_layer");
       console.log(c);
-      var totalWidth = 300;
-      var totalHeight = 150;
+      var totalWidth = document.getElementById("path_layer").width;
+      var totalHeight = document.getElementById("path_layer").height;
       //c.style = "background-color:red";
       var ctx=c.getContext("2d");
-      var pastHeight = totalHeight;
-      var pastWidth = totalWidth/2
-      ctx.beginPath();
+      var pastHeight = totalHeight/2;
+      var pastWidth = totalWidth/2;
+      var oldDistance = 0;
+     /* ctx.beginPath();
       ctx.moveTo(totalWidth/2,totalHeight);
       ctx.lineTo(totalWidth/2,totalHeight/2);
-      ctx.stroke();
+      ctx.stroke(); */
 
     socket.on('data has been sent', function (call) {
       // console.log(call);
@@ -418,14 +419,29 @@ https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
         document.getElementById('battery-data').innerHTML = call.battery;
       
       if (call.distance) {
-        document.getElementById('distance-data').innerHTML = call.distance;
-        ctx.beginPath();
-        ctx.moveTo(pastWidth,pastHeight);
+        //console.log("this is distance:" + call.distance);
+        //console.log("^^^^^^^");
+        if (call.distance != oldDistance) {
 
-        ctx.lineTo(pastWidth,pastHeight - distance / 10);
-        ctx.stroke();
+        
+          document.getElementById('distance-data').innerHTML = call.distance;
 
+          ctx.beginPath();
+          ctx.moveTo(pastWidth,pastHeight);
+          console.log(call.angle);
 
+          var newX = pastWidth + Math.cos(parseInt(call.angle)) * call.distance;
+          var newY = pastHeight + Math.sin(parseInt(call.angle)) * call.distance;
+
+          console.log(newX);
+          console.log(newY);
+
+          ctx.lineTo(pastWidth - (newX / 5000),pastHeight - (newY / 5000));
+          pastWidth = pastWidth - (newX / 5000);
+          pastHeight = pastHeight - (newY / 5000);
+          ctx.stroke();
+          oldDistance = call.distance;
+        }
 
       }
 
