@@ -21,7 +21,15 @@ var headers = {
     'User-Agent': 'Super Agent/0.0.1',
     'Content-Type': 'application/x-www-form-urlencoded'
 }
+var timer;
 
+function clearTimer() {
+    if (timer) {
+        clearTimeout(timer);
+        timer = 0;
+    }
+}
+var ignore;
 app.post('/', function (req, res) {
     // angle
     // cliffLeft, cliffFrontLeft, cliffFrontRight, cliffRight
@@ -33,6 +41,26 @@ app.post('/', function (req, res) {
     // res.json({ status: "success" });
     // console.log('req.body:', req.body);
     io.emit('data has been sent', req.body);
+    if ((req.body.bumpLeft == "true" || req.body.bumpRight == "true") && !ignore) {
+        ignore = true;
+        robot.driveSpeed(-100, -100);
+
+        timer=setTimeout(function() {
+            robot.drive(0, 0);
+            console.log("I was bumped!");
+            clearTimer();
+            if (req.body.bumpLeft == "true") {
+                robot.driveSpeed(100, -100);
+            } else {
+                robot.driveSpeed(-100, 100);
+            }
+            timer = setTimeout(function() {
+                ignore = false;
+                robot.drive(0, 0);
+            }, (90/55)*1000);
+        }, 500);
+        
+    }
 });
 
 
@@ -118,7 +146,7 @@ function main(r) {
             options.form.lightBumpCenterRight = chg.lightBumpCenterRight || false;
             options.form.lightBumpRight = chg.lightBumpRight || false;
             options.form.chargeState = String(Math.round((robot.data.charge / robot.data.maxCharge) * 100)) + "%" || 0;
-            console.log(robot.data)
+            // console.log(robot.data)
 
             // send data after all possible changes
             request(options, function (error, response, body) {
@@ -233,81 +261,65 @@ function main(r) {
             console.log('user disconnected');
         });
 
-        // socket.on('reset-robot'), () => {
-            // options = {
-            //     url: 'http://localhost:3000',
-            //     method: 'POST',
-            //     headers: headers,
-            //     form: {
-            //         distance: 0,
-            //         angle: 0,
-            //         battery: 0,
-            //         cliffLeft: false,
-            //         cliffFrontLeft: false,
-            //         cliffFromRight: false,
-            //         cliffRight: false,
-            //         bumpLeft: false,
-            //         bumpRight: false,
-            //         lightBumpLeft: false,
-            //         lightBumpFrontLeft: false,
-            //         lightBumpCenterLeft: false,
-            //         lightBumpCenterRight: false,
-            //         lightBumpFrontRight: false,
-            //         lightBumpRight: false,
-            //         wall: false, // unnecessary
-            //         velocity: 0,
-            //         leftEncoder: 0,
-            //         rightEncoder: 0,
-            //     }
-            // }
-        // }
-        socket.on('reset-robot', () => {
-            console.log('reset robot')
-            options = options = {
-                url: 'http://localhost:3000',
-                method: 'POST',
-                headers: headers,
-                form: {
-                    distance: 0,
-                    angle: 0,
-                    battery: 0,
-                    cliffLeft: false,
-                    cliffFrontLeft: false,
-                    cliffFromRight: false,
-                    cliffRight: false,
-                    bumpLeft: false,
-                    bumpRight: false,
-                    chargeState: 0,
-                    lightBumpLeft: false,
-                    lightBumpFrontLeft: false,
-                    lightBumpCenterLeft: false,
-                    lightBumpCenterRight: false,
-                    lightBumpFrontRight: false,
-                    lightBumpRight: false,
-                    wall: false, // unnecessary
-                    velocity: 0,
-                    leftEncoder: 0,
-                    rightEncoder: 0,
-                }
-            }
-        })
+        // socket.on('reset-robot', () => {
+        //     console.log('reset robot')
+        //     options = {
+        //         url: 'http://localhost:3000',
+        //         method: 'POST',
+        //         headers: headers,
+        //         form: {
+        //             distance: 0,
+        //             angle: 0,
+        //             battery: 0,
+        //             cliffLeft: false,
+        //             cliffFrontLeft: false,
+        //             cliffFromRight: false,
+        //             cliffRight: false,
+        //             bumpLeft: false,
+        //             bumpRight: false,
+        //             chargeState: 0,
+        //             lightBumpLeft: false,
+        //             lightBumpFrontLeft: false,
+        //             lightBumpCenterLeft: false,
+        //             lightBumpCenterRight: false,
+        //             lightBumpFrontRight: false,
+        //             lightBumpRight: false,
+        //             wall: false, // unnecessary
+        //             velocity: 0,
+        //             leftEncoder: 0,
+        //             rightEncoder: 0,
+        //         }
+        //     }
+        // })
 
         socket.on('move-up', () => {
-            console.log('move up')
+            console.log('move up');
             robot.drive(100, 32767);
         });
 
         socket.on('turn-left', () => {
             console.log('turn left');
             // turnRobot();
-            robot.drive(-100, -100);
+            robot.driveSpeed(-100, 100);
+            setTimeout(function() {
+				robot.drive(0, 0);
+			}, (90 / 55)*1000);
         })
 
         socket.on('turn-right', () => {
             console.log('turn right')
             // turnRobot();
-            robot.drive(-100, 100);
+            robot.driveSpeed(100, -100);
+            setTimeout(function() {
+				robot.drive(0, 0);
+			}, (90 / 55)*1000);
         });
+
+        // backwards
+        socket.on('go-back', () => {
+            robot.driveSpeed(-100, -100);
+        });
+        //robot.driveSpeed(-100, -100);
 
         socket.on('stop-turning', () => {
             console.log('stop turn')
