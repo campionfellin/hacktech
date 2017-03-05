@@ -5,17 +5,14 @@ var io = require('socket.io')(server);
 var request = require('request');
 var robot2 = require('robotjs');
 var ApiAiAssistant = require('actions-on-google').ApiAiAssistant;
-
 var cors = require('cors');
-
-
-
 var timer;
 
 
 app.set('port', process.env.PORT || 3000);
 
 app.use(cors());
+
 //var server = app.listen(3000, () => {
   //  console.log('Example app listening on port 3000!')
 //});
@@ -43,6 +40,7 @@ app.get('/', function(request, response) {
 var myCommand = "";
 var hasStarted = false;
 start();
+app.options('/', cors());
 app.post('/', function(request, response) {
 	const assistant = new ApiAiAssistant({request: request, response: response});
 	console.log(request.body);
@@ -100,20 +98,15 @@ app.post('/', function(request, response) {
 	 		assistant.ask(command+' What is your next command?',
         	['Say a command', 'command me', 'instructions']);
 		}
-
-	//response.send("");
 });
 
 var ignore = false;
 app.post('/update', function(request, response) {
 	//console.log("this is the data");
 	//console.log(request.body);
-
 	//console.log(request.body.bumpLeft);
 	//console.log(request.body.bumpRight);
 	if ((request.body.bumpLeft == "true" || request.body.bumpRight == "true") && !ignore) {
-
-
 		ignore = true;
 		driveBack();
 
@@ -131,14 +124,7 @@ app.post('/update', function(request, response) {
 				stopLogic();
 			}, (90 / 55)*1000);
 		}, 500);
-
-
-		
 	}
-
-
-
-
 });
 
 
@@ -187,9 +173,9 @@ var options = {
         wall: false,
         velocity: 0,
         leftEncoder: 0,
-        rightEncoder: 0,
+        rightEncoder: 0
     }
-}
+};
 
 
 //Main Program:
@@ -274,9 +260,6 @@ function main(r) {
         } else {
         	robot.driveSpeed(100,-100);
         }
-       
-        //robot.drive(20, degrees);
-    	//turnRobot();
     };
 
     driveBack = function() {
