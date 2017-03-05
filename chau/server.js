@@ -146,6 +146,7 @@ function main(r) {
             options.form.lightBumpCenterRight = chg.lightBumpCenterRight || false;
             options.form.lightBumpRight = chg.lightBumpRight || false;
             options.form.chargeState = String(Math.round((robot.data.charge / robot.data.maxCharge) * 100)) + "%" || 0;
+            options.form.isCharging = robot.data.chargeState;
             // console.log(robot.data)
 
             // send data after all possible changes
@@ -290,7 +291,7 @@ function main(r) {
         //             rightEncoder: 0,
         //         }
         //     }
-        // })
+        // })   
 
         socket.on('move-up', () => {
             console.log('move up');

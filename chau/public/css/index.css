@@ -30,14 +30,23 @@
      color: red;
  }
 
+.card-panel {
+    padding: .25rem 0 0.75rem 0;
+}
+
 .statistic {
     margin: 0;
-    border: 1px dashed black;
+    /*border: 1px dashed black;*/
     /*padding: 1em;*/
 }
+
+nav {
+    margin-bottom: 25px;
+}
+
  .statistic {
      text-align: center;
-     height: 150px;
+     height: 100px;
  }
 
  .statistic span {
@@ -47,7 +56,7 @@
  }
 
  .statistic span i {
-     font-size: 1.5em;
+     /*font-size: 1.5em;*/
  }
 
  #left-encoder, #right-encoder {
@@ -64,7 +73,7 @@
 }
 
 .warning, #cliff-left-data, #cliff-right-data, #cliff-front-left-data, #cliff-front-right-data, #bump-left-data, #bump-right-data, #light-bump-left-data, #light-bump-front-left-data, #light-bump-center-left-data, #light-bump-center-right-data, #light-bump-front-right-data, #light-bump-right-data {
-    font-size: 3em;
+    font-size: 2em;
     padding: 0 !important;
     text-align: center;
 }
