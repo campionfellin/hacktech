@@ -228,9 +228,6 @@
             </div>
           </div>
         </div>
-
-
-
   </div>
   </li>
   </ul>
@@ -242,73 +239,20 @@
 https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
   <script type="text/javascript">
-    console.log('begin');
     var socket = io();
 
-
-    console.log('socket begins');
-
-    // fetch('/currentData').then(function (response) { return response.text() }).then(function (body) {
-    //     console.log(body);
-    //   });
     var lastAngle = 0;
     var lastEncLeft = 0;
     var lastEncRight = 0;
     var moving = false;
-    console.log('test');
-    // socket.emit('reset-robot', function (data) {
-    //   console.log('reset-robot')
-    // });
-    // socket.emit('reset-robot', function(data) {
-    //   console.log(data);
-    //   console.log('resetted');
-    // });
-    // function drawWithUpdatedData() {
-    //   fetch('currentPos')
-    //             .then(res => {
-    //               console.log('got response');
-    //             return res.json() })
-    //             .then(body => {
-    //               console.log('getting request')
-    //             console.log(body); 
-    //             drawStep(body.distance, 0, body.angle, 'quick', 'run');
-    //             console.log('drawn');
-    //           });
-    // }
-    // document.getElementById('cliff-left-data').style.color = 'red';
-    // document.getElementById('cliff-left-data').innerHTML = "<span class='warning fade-in'>!</span>"
-    document.getElementById('cliff-left-data').innerHTML = "<span style='color:red;' class='warning fade-in'>!</span>";
-    document.getElementById('cliff-front-left-data').innerHTML = "<span style='color:red;' class='warning fade-in'>!</span>";
-    document.getElementById('cliff-front-right-data').innerHTML = "<span style='color:red;' class='warning fade-in'>!</span>";
-    document.getElementById('cliff-right-data').innerHTML = "<span style='color:red;' class='warning fade-in'>!</span>";
-    document.getElementById('bump-left-data').innerHTML = "<span style='color:red;' class='warning fade-in'>!</span>";
-    document.getElementById('bump-right-data').innerHTML = "<span style='color:red;' class='warning fade-in'>!</span>";
-    document.getElementById('light-bump-left-data').innerHTML = "<span style='color:red;' class='warning fade-in'>!</span>";
-    document.getElementById('light-bump-front-left-data').innerHTML = "<span style='color:red;' class='warning fade-in'>!</span>";
-    //#light-bump-center-left-data, #light-bump-center-right-data, #light-bump-front-right-data, #light-bump-right-data 
-    document.getElementById('light-bump-center-left-data').innerHTML = "<span style='color:red;' class='warning fade-in'>!</span>";
-    document.getElementById('light-bump-center-right-data').innerHTML = "<span style='color:red;' class='warning fade-in'>!</span>";
-    document.getElementById('light-bump-front-right-data').innerHTML = "<span style='color:red;' class='warning fade-in'>!</span>";
-    document.getElementById('light-bump-right-data').innerHTML = "<span style='color:green' fade-in'><i class='fa fa-check'></i></span>";
+
     document.getElementById('stop-driving-btn').onclick = function () {
       socket.emit('stop-moving', function (data) {
         console.log('stop')
       });
     }
 
-    document.getElementById('angle-data').innerHTML = 50;
-    document.getElementById('angle-data').innerHTML += '&nbsp<i class="red-arr fa fa-arrow-down" aria-hidden="true"></i>';
-
-    document.getElementById('distance-data').innerHTML = 50;
-    document.getElementById('distance-data').innerHTML += '&nbsp;mm';
-
-    document.getElementById('left-encoder-data').innerHTML += '20000&nbsp<i class="green-arr fa fa-arrow-up" aria-hidden="true"></i>';
-    document.getElementById('right-encoder-data').innerHTML += '50000&nbsp<i class="green-arr fa fa-arrow-up" aria-hidden="true"></i>';
-    // document.getElementById('light-bump-left-data').innerHTML = call.lightBumpLeft;;
     document.getElementById("ctrl-arr-up").onclick = function () {
-
-
-      console.log('clicked')
       socket.emit("move-up", function (data) {
         moving = true;
       });
@@ -338,15 +282,12 @@ https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
     document.getElementById("stop-driving-btn").onclick = function () {
       socket.emit("stop-moving", function (data) {
         if (moving) {
-          // drawWithUpdatedData();
           moving = false;
         }
       });
     }
     socket.on('angle distance changed', function (call) {
       console.log('angle distance is changing');
-      // drawStep(call.distance, 0, call.angle, 'quick', 'run');
-      // console.log('distance:', distance);
     });
 
     socket.on('data has been sent', function (call) {
@@ -368,17 +309,15 @@ https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
         document.getElementById('battery-data').innerHTML = call.chargeState;
 
       if (call.distance)
-        document.getElementById('distance-data').innerHTML = call.distance;
+        document.getElementById('distance-data').innerHTML = call.distance + '&nbsp;mm';
 
       if (call.angle) {
         document.getElementById('angle-data').innerHTML = call.angle;
       }
 
-
       var warning = "<span style='color:red;' class='warning'>!</span>";
       var safe = "<span style='color:green' fade-in'><i class='fa fa-check'></i></span>";
       if (call.cliffLeft) {
-        // document.getElementById('cliff-left-data').innerHTML = "call.cliffLeft.toString();"
         if (booleans[call.cliffLeft]) {
           document.getElementById('cliff-left-data').innerHTML = warning;
         } else {
@@ -426,9 +365,6 @@ https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
         }
       }
 
-      // if (call.wall)
-      // document.getElementById('wall-data').innerHTML = call.wall.toString();
-
       if (call.velocity)
         document.getElementById('velocity-data').innerHTML = call.velocity;
 
@@ -457,9 +393,7 @@ https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
         if (!booleans[call.lightBumpFrontLeft])
           document.getElementById('light-bump-front-left-data').innerHTML = safe;
       }
-      // if (call.lightBumpFrontLeft) {
-      //   document.getElementById('light-bump-front-left-data').innerHTML = call.lightBumpFrontLeft;
-      // }
+
       if (booleans[call.lightBumpCenterLeft]) {
         document.getElementById('light-bump-center-left-data').innerHTML = 'WALL';
       } else {
@@ -467,19 +401,13 @@ https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
           document.getElementById('light-bump-center-left-data').innerHTML = safe;
       }
 
-      // if (call.lightBumpCenterLeft) {
-      //   document.getElementById('light-bump-center-left-data').innerHTML = call.lightBumpCenterLeft;
-      // }
-
       if (booleans[call.lightBumpCenterRight]) {
         document.getElementById('light-bump-center-right-data').innerHTML = 'WALL';
       } else {
         if (!booleans[call.lightBumpCenterRight])
           document.getElementById('light-bump-center-right-data').innerHTML = safe;
       }
-      // if (call.bumpCenterRight) {
-      //   document.getElementById('light-bump-center-right-data').innerHTML = call.lightBumpCenterRight;
-      // }
+
       console.log('call', call);
       if (booleans[call.lightBumpFrontRight]) {
         document.getElementById('light-bump-front-right-data').innerHTML = 'WALL';
@@ -487,18 +415,13 @@ https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
         if (!booleans[call.lightBumpFrontRight])
           document.getElementById('light-bump-front-right-data').innerHTML = safe;
       }
-      // if (call.lightBumpFrontRight) {
-      //   document.getElementById('light-bump-front-right-data').innerHTML = call.lightBumpFrontRight;
-      // }
+
       if (booleans[call.lightBumpRight]) {
         document.getElementById('light-bump-right-data').innerHTML = 'WALL';
       } else {
         if (!booleans[call.lightBumpRight])
           document.getElementById('light-bump-right-data').innerHTML = safe;
       }
-      // if (call.bumpRight) {
-      //   document.getElementById('light-bump-right-data').innerHTML = call.lightBumpRight;
-      // }
 
       if (call.rightEncoder)
         document.getElementById('right-encoder-data').innerHTML = call.rightEncoder;
