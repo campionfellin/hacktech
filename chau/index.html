@@ -33,12 +33,14 @@
         <div id="controls">
           <div class="col s12 offset-s3">
             <img id="ctrl-arr-up" class='responsive-img ctrl-arr' src="images/arrow-up.png" />
+            <span id="increase-speed-btn" class="speed-btn"><i class="fa fa-arrow-up" style="color:green"></i></span>
           </div>
           <img id="ctrl-arr-left" class='responsive-img ctrl-arr' src="images/arrow-left.png" />
           <img id="stop-driving-btn" class='responsive-img ctrl-arr' src="images/stop.png" />
           <img id="ctrl-arr-right" class='responsive-img ctrl-arr' src="images/arrow-right.png" />
           <div class="col s12 offset-s3">
             <img id="ctrl-arr-down" class='responsive-img ctrl-arr' src="images/arrow-down.png" />
+            <span id="decrease-speed-btn" class="speed-btn"><i class="fa fa-arrow-down" style="color: red"></i></span>
           </div>
         </div>
       </div>
@@ -119,7 +121,7 @@
                   <div class="card-panel">
                     <li id="cliff-left" class="statistic">
                       <img class='dashboard-icon' src="./images/cliff-left.jpg" />
-                      <h5 class='statistic-header'>&nbsp;Cliff Left</h5>
+                      <h6 class='statistic-header'>&nbsp;Cliff Left</h6>
                       <span id="cliff-left-data"></span>
                     </li>
                   </div>
@@ -128,7 +130,7 @@
                   <div class="card-panel">
                     <li id="cliff-front-left" class="statistic">
                       <img class='dashboard-icon' src="./images/cliff-ft-left.png" />
-                      <h5 class='statistic-header'>&nbsp;Cliff Ft Left</h5>
+                      <h6 class='statistic-header'>&nbsp;Cliff Ft Left</h6>
                       <span id="cliff-front-left-data"></span>
                     </li>
                   </div>
@@ -137,7 +139,7 @@
                   <div class="card-panel">
                     <li id="cliff-front-right" class="statistic">
                       <img class='dashboard-icon' src="./images/cliff-ft-right.png" />
-                      <h5 class='statistic-header'>&nbsp;Cliff Ft Right</h5>
+                      <h6 class='statistic-header'>&nbsp;Cliff Ft Right</h6>
                       <span id="cliff-front-right-data"></span>
                     </li>
                   </div>
@@ -146,26 +148,44 @@
                   <div class="card-panel">
                     <li id="cliff-right" class="statistic">
                       <img class='dashboard-icon' src="./images/cliff-right.jpg" />
-                      <h5 class='statistic-header'>&nbsp;Cliff Right</h5>
+                      <h6 class='statistic-header'>&nbsp;Cliff Right</h6>
                       <span id="cliff-right-data"></span>
                     </li>
                   </div>
                 </div>
-                <div class="col s12 m6">
+                <div class="col s12 m3">
                   <div class="card-panel">
                     <li id="bump-left" class="statistic">
                       <img class='dashboard-icon' src="./images/bump.png" />
-                      <h5 class='statistic-header'>&nbsp;Bump Left</h5>
+                      <h6 class='statistic-header'>&nbsp;Bump Left</h6>
                       <span id="bump-left-data"></span>
                     </li>
                   </div>
                 </div>
-                <div class="col s12 m6">
+                <div class="col s12 m3">
                   <div class="card-panel">
                     <li id="bump-right" class="statistic">
                       <img class='dashboard-icon' src="./images/bump.png" />
-                      <h5 class='statistic-header'>&nbsp;Bump Right</h5>
+                      <h6 class='statistic-header'>&nbsp;Bump Right</h6>
                       <span id="bump-right-data"></span>
+                    </li>
+                  </div>
+                </div>
+                <div class="col s12 m3">
+                  <div class="card-panel">
+                    <li id="drop-right" class="statistic">
+                      <img class='dashboard-icon' src="./images/bump.png" />
+                      <h6 class='statistic-header'>&nbsp;Drop Left</h6>
+                      <span id="drop-left-data"></span>
+                    </li>
+                  </div>
+                </div>
+                <div class="col s12 m3">
+                  <div class="card-panel">
+                    <li id="drop-right" class="statistic">
+                      <img class='dashboard-icon' src="./images/bump.png" />
+                      <h6 class='statistic-header'>&nbsp;Drop Right</h6>
+                      <span id="drop-right-data"></span>
                     </li>
                   </div>
                 </div>
@@ -230,11 +250,11 @@
         </div>
       </li>
     </ul>
-      <!-- campion changes below -->
+    <!-- campion changes below -->
 
     <div style="position: relative;">
-        <canvas id="path_layer"  style="position: absolute; left: 0; top: 0; z-index: 0; border:1px solid #d3d3d3; width:100%"></canvas>
-       <!-- <canvas id="robot_body_layer" style="position: absolute; left: 0; top: 0; z-index: 1; border:1px solid #d3d3d3;"></canvas>
+      <canvas id="path_layer" style="position: absolute; left: 0; top: 0; z-index: 0; border:1px solid #d3d3d3; width:100%"></canvas>
+      <!-- <canvas id="robot_body_layer" style="position: absolute; left: 0; top: 0; z-index: 1; border:1px solid #d3d3d3;"></canvas>
         <canvas id="text_layer" style="position: absolute; left: 0; top: 0; z-index: 2; border:1px solid #d3d3d3;"></canvas> -->
     </div>
 
@@ -252,7 +272,6 @@ https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
     var lastEncLeft = 0;
     var lastEncRight = 0;
     var moving = false;
-
     document.getElementById('stop-driving-btn').onclick = function () {
       socket.emit('stop-moving', function (data) {
         console.log('stop')
@@ -279,6 +298,18 @@ https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
       })
     }
 
+    document.getElementById('increase-speed-btn').onclick = function () {
+      socket.emit("increase-speed", function (d) {
+        console.log(d);
+      });
+    };
+
+    document.getElementById('decrease-speed-btn').onclick = function () {
+      socket.emit("decrease-speed", function (d) {
+        console.log(d);
+      })
+    };
+
     document.getElementById("ctrl-arr-down").onclick = function () {
       console.log('clicked down arr')
       socket.emit("go-back", function (data) {
@@ -298,19 +329,23 @@ https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
     });
 
 
-      var c = document.getElementById("path_layer");
-      console.log(c);
-      var totalWidth = document.getElementById("path_layer").width;
-      var totalHeight = document.getElementById("path_layer").height;
-      //c.style = "background-color:red";
-      var ctx=c.getContext("2d");
-      var pastHeight = totalHeight * (4/5);
-      var pastWidth = totalWidth/2;
-      var oldDistance = 0;
-     /* ctx.beginPath();
-      ctx.moveTo(totalWidth/2,totalHeight);
-      ctx.lineTo(totalWidth/2,totalHeight/2);
-      ctx.stroke(); */
+    var c = document.getElementById("path_layer");
+    console.log(c);
+    var totalWidth = document.getElementById("path_layer").width;
+    var totalHeight = document.getElementById("path_layer").height;
+    //c.style = "background-color:red";
+    var ctx = c.getContext("2d");
+    var pastHeight = totalHeight * (4 / 5);
+    var pastWidth = totalWidth / 2;
+    var oldDistance = 0;
+    /* ctx.beginPath();
+     ctx.moveTo(totalWidth/2,totalHeight);
+     ctx.lineTo(totalWidth/2,totalHeight/2);
+     ctx.stroke(); */
+    socket.on('speed has changed', function (call) {
+      if (call.speed)
+        document.getElementById('velocity-data').innerHTML = call.speed;
+    });
 
     socket.on('data has been sent', function (call) {
       // console.log(call);
@@ -335,17 +370,17 @@ https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
 
       if (call.battery)
         document.getElementById('battery-data').innerHTML = call.battery;
-      
+
       if (call.distance) {
         //console.log("this is distance:" + call.distance);
         //console.log("^^^^^^^");
         if (call.distance != oldDistance) {
 
-        
+
           document.getElementById('distance-data').innerHTML = call.distance;
 
           ctx.beginPath();
-          ctx.moveTo(pastWidth,pastHeight);
+          ctx.moveTo(pastWidth, pastHeight);
           console.log(call.angle);
 
           var tempAngle = parseInt(call.angle);
@@ -361,7 +396,7 @@ https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
           console.log(newX);
           console.log(newY);
 
-          ctx.lineTo(pastWidth - (newX / 5000),pastHeight - (newY / 5000));
+          ctx.lineTo(pastWidth - (newX / 5000), pastHeight - (newY / 5000));
           pastWidth = pastWidth - (newX / 5000);
           pastHeight = pastHeight - (newY / 5000);
           ctx.stroke();
@@ -424,9 +459,6 @@ https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
         }
       }
 
-      if (call.velocity)
-        document.getElementById('velocity-data').innerHTML = call.velocity;
-
       if (call.leftEncoder) {
         document.getElementById('left-encoder-data').innerHTML = call.leftEncoder;
 
@@ -438,7 +470,7 @@ https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
 
         lastEncLeft = call.leftEncoder;
       }
-      
+
       if (booleans[call.lightBumpLeft]) {
         document.getElementById('light-bump-left-data').innerHTML = 'WALL';
       } else {
@@ -482,16 +514,28 @@ https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
           document.getElementById('light-bump-right-data').innerHTML = safe;
       }
 
+      if (booleans[call.dropLeft]) {
+        document.getElementById('drop-left-data').innerHTML = warning;
+      } else {
+        document.getElementById('drop-left-data').innerHTML = safe;
+      }
+
+      if (booleans[call.dropRight]) {
+        document.getElementById('drop-right-data').innerHTML = warning;
+      } else {
+        document.getElementById('drop-right-data').innerHTML = safe;
+      }
+
       if (call.rightEncoder) {
         document.getElementById('right-encoder-data').innerHTML = call.rightEncoder;
 
-      if (lastEncRight < call.rightEncoder) {
-        document.getElementById('right-encoder-data').innerHTML += '&nbsp<i class="green-arr fa fa-arrow-up" aria-hidden="true"></i>';
-      } else if (lastEncRight > call.rightEncoder) {
-        document.getElementById('right-encoder-data').innerHTML += '&nbsp<i class="red-arr fa fa-arrow-down" aria-hidden="true"></i>';
-      }
+        if (lastEncRight < call.rightEncoder) {
+          document.getElementById('right-encoder-data').innerHTML += '&nbsp<i class="green-arr fa fa-arrow-up" aria-hidden="true"></i>';
+        } else if (lastEncRight > call.rightEncoder) {
+          document.getElementById('right-encoder-data').innerHTML += '&nbsp<i class="red-arr fa fa-arrow-down" aria-hidden="true"></i>';
+        }
 
-      lastEncLeft = call.leftEncoder;
+        lastEncLeft = call.leftEncoder;
       }
 
     });

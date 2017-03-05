@@ -76,6 +76,11 @@ nav {
     background-color: #FDFDFD;
 }
 
+.speed-btn {
+    font-size: 3em;
+    padding-left: 70px;
+}
+
 .warning, #cliff-left-data, #cliff-right-data, #cliff-front-left-data, #cliff-front-right-data, #bump-left-data, #bump-right-data, #light-bump-left-data, #light-bump-front-left-data, #light-bump-center-left-data, #light-bump-center-right-data, #light-bump-front-right-data, #light-bump-right-data {
     font-size: 2em;
     padding: 0 !important;

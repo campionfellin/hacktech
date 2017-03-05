@@ -273,7 +273,7 @@ function main(r) {
         socket.on('disconnect', () => {
             console.log('user disconnected');
         });
-
+        socket.emit('speed has changed', {speed: defaultSpeed});
         // socket.on('reset-robot', () => {
         //     console.log('reset robot')
         //     options = {
@@ -304,10 +304,10 @@ function main(r) {
         //         }
         //     }
         // })   
-
+        var defaultSpeed = 100;
         socket.on('move-up', () => {
             console.log('move up');
-            robot.drive(100, 32767);
+            robot.drive(defaultSpeed, 32767);
         });
 
         socket.on('turn-left', () => {
@@ -343,6 +343,19 @@ function main(r) {
             console.log('stop moving');
             robot.driveSpeed(0, 0);
         })
+
+        socket.on('increase-speed', () => {
+            console.log('increase speed');
+            defaultSpeed += 10;
+            socket.emit('speed has changed', {speed: defaultSpeed});
+        });
+
+        socket.on('decrease-speed', () => {
+            console.log('decrease speed');
+            deaultSpeed -= 10;
+            socket.emit('speed has changed', {speed: defaultSpeed});
+        })
+        
         
     });
 }
