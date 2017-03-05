@@ -12,7 +12,7 @@
 
   <!-- Compiled and minified CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
-
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="css/index.css?v=1.0">
 
   <!--[if lt IE 9]>
@@ -22,14 +22,14 @@
 
 <body>
   <div class="container">
-     <nav>
-    <div class="nav-wrapper">
-      <a href="#" class="brand-logo">&nbsp;Roomba Dashboard</a>
-    </div>
-  </nav>
+    <nav>
+      <div class="nav-wrapper">
+        <a href="#" class="brand-logo">&nbsp;Roomba Dashboard</a>
+      </div>
+    </nav>
     <!--<h2>Roomba Dashboard</h2>-->
     <div class="row">
-      <div class="col s6">
+      <div class="col s12 m6">
         <div id="controls">
           <div class="col s12 offset-s3">
             <img id="ctrl-arr-up" class='responsive-img ctrl-arr' src="images/arrow-up.png" />
@@ -42,151 +42,194 @@
           </div>
         </div>
       </div>
-      <div class="col s6">
-        <div id="bumpers">
-          <h5 id="bumpers-header">Bumpers</h5>
-          <svg viewBox='0 0 100 100'>
-            <circle cx='50' cy='50' r='45' id='gray' />
-            <circle cx='50' cy='50' r='45' id='top-left' />
-            <circle cx='50' cy='50' r='45' id='top-right' />
-            <circle cx='50' cy='50' r='45' id='blue' />
-            <circle cx='50' cy='50' r='45' id='orange' />
-          </svg>
+      <div class="col s12 m6">
+        <div class="card-panel">
+          <div id="bumpers">
+            <h5 id="bumpers-header">Bumpers</h5>
+            <svg viewBox='0 0 100 100'>
+              <circle cx='50' cy='50' r='45' id='gray' />
+              <circle cx='50' cy='50' r='45' id='top-left' />
+              <circle cx='50' cy='50' r='45' id='top-right' />
+              <circle cx='50' cy='50' r='45' id='blue' />
+              <circle cx='50' cy='50' r='45' id='orange' />
+            </svg>
+          </div>
         </div>
       </div>
     </div>
-
-    <div id="detailed-statistics">
-      <div class="row">
-        <ul id="statistics-list">
-          <div class="col s4">
-            <li id="battery" class="statistic">
-              <img class='dashboard-icon' src="images/battery.jpg" />
-              <h5 class='statistic-header'>&nbsp;Battery</h5>
-              <span id="battery-data"></span>
-            </li>
-          </div>
-          <div class="col s4">
-            <li id="distance" class="statistic">
-              <img class='dashboard-icon' src="images/distance.png" />
-              <h5 class='statistic-header'>&nbsp;Distance</h5>
-              <span id="distance-data"></span>
-            </li>
-          </div>
-          <div class="col s4">
-            <li id="angle" class="statistic">
-              <img class='dashboard-icon' src="./images/angle.png" />
-              <h5 class='statistic-header'>&nbsp;Angle</h5>
-              <span id="angle-data"></span>
-            </li>
-          </div>
-          <div class="col s3">
-            <li id="cliff-left" class="statistic">
-              <img class='dashboard-icon' src="./images/cliff-left.jpg" />
-              <h5 class='statistic-header'>&nbsp;Cliff Left</h5>
-              <span id="cliff-left-data"></span>
-            </li>
-          </div>
-          <div class="col s3">
-            <li id="cliff-front-left" class="statistic">
-              <img class='dashboard-icon' src="./images/cliff-ft-left.png" />
-              <h5 class='statistic-header'>&nbsp;Cliff Ft Left</h5>
-              <span id="cliff-front-left-data"></span>
-            </li>
-          </div>
-          <div class="col s3">
-            <li id="cliff-front-right" class="statistic">
-              <img class='dashboard-icon' src="./images/cliff-ft-right.png" />
-              <h5 class='statistic-header'>&nbsp;Cliff Ft Right</h5>
-              <span id="cliff-front-right-data"></span>
-            </li>
-          </div>
-          <div class="col s3">
-            <li id="cliff-right" class="statistic">
-              <img class='dashboard-icon' src="./images/cliff-right.jpg" />
-              <h5 class='statistic-header'>&nbsp;Cliff Right</h5>
-              <span id="cliff-right-data"></span>
-            </li>
-          </div>
-          <div class="col s6">
-            <li id="bump-left" class="statistic">
-              <img class='dashboard-icon' src="./images/bump.png" />
-              <h5 class='statistic-header'>&nbsp;Bump Left</h5>
-              <span id="bump-left-data"></span>
-            </li>
-          </div>
-          <div class="col s6">
-            <li id="bump-right" class="statistic">
-              <img class='dashboard-icon' src="./images/bump.png" />
-              <h5 class='statistic-header'>&nbsp;Bump Right</h5>
-              <span id="bump-right-data"></span>
-            </li>
-          </div>
-          <!--<div class="col s4">
+    <ul class="collapsible" data-collapsible="accordion">
+      <li>
+        <div class="collapsible-header active"><i class="material-icons">insert_chart</i>Statistics</div>
+        <div class="collapsible-body">
+          <div id="detailed-statistics">
+            <div class="row">
+              <ul id="statistics-list">
+                <div class="col s12 m4">
+                  <div class="card-panel">
+                    <li id="battery" class="statistic">
+                      <img class='dashboard-icon' src="images/battery.jpg" />
+                      <h5 class='statistic-header'>&nbsp;Battery</h5>
+                      <span id="battery-data"></span>
+                    </li>
+                  </div>
+                </div>
+                <div class="col s12 m4">
+                  <div class="card-panel">
+                    <li id="distance" class="statistic">
+                      <img class='dashboard-icon' src="images/distance.png" />
+                      <h5 class='statistic-header'>&nbsp;Distance</h5>
+                      <span id="distance-data"></span>
+                    </li>
+                  </div>
+                </div>
+                <div class="col s12 m4">
+                  <div class="card-panel">
+                    <li id="angle" class="statistic">
+                      <img class='dashboard-icon' src="./images/angle.png" />
+                      <h5 class='statistic-header'>&nbsp;Angle</h5>
+                      <span id="angle-data"></span>
+                    </li>
+                  </div>
+                </div>
+                <div class="col s12 m6">
+                  <div class="card-panel">
+                    <li id="left-encoder" class="statistic">
+                      <h5 class='statistic-header'>&nbsp;Left Encoder</h5>
+                      <span id="left-encoder-data"></span>
+                    </li>
+                  </div>
+                </div>
+                <div class="col s12 m6">
+                  <div class="card-panel">
+                    <li id="right-encoder" class="statistic">
+                      <h5 class='statistic-header'>&nbsp;Right Encoder</h5>
+                      <span id="right-encoder-data"></span>
+                    </li>
+                  </div>
+                </div>
+                <div class="col s12">
+                  <div class="card-panel">
+                    <li id="velocity" class="statistic">
+                      <h5 class='statistic-header'>Velocity</h5>
+                      <span id="velocity-data"></span>
+                    </li>
+                  </div>
+                </div>
+                <div class="col s12 m3">
+                  <div class="card-panel">
+                    <li id="cliff-left" class="statistic">
+                      <img class='dashboard-icon' src="./images/cliff-left.jpg" />
+                      <h5 class='statistic-header'>&nbsp;Cliff Left</h5>
+                      <span id="cliff-left-data"></span>
+                    </li>
+                  </div>
+                </div>
+                <div class="col s12 m3">
+                  <div class="card-panel">
+                    <li id="cliff-front-left" class="statistic">
+                      <img class='dashboard-icon' src="./images/cliff-ft-left.png" />
+                      <h5 class='statistic-header'>&nbsp;Cliff Ft Left</h5>
+                      <span id="cliff-front-left-data"></span>
+                    </li>
+                  </div>
+                </div>
+                <div class="col s12 m3">
+                  <div class="card-panel">
+                    <li id="cliff-front-right" class="statistic">
+                      <img class='dashboard-icon' src="./images/cliff-ft-right.png" />
+                      <h5 class='statistic-header'>&nbsp;Cliff Ft Right</h5>
+                      <span id="cliff-front-right-data"></span>
+                    </li>
+                  </div>
+                </div>
+                <div class="col s12 m3">
+                  <div class="card-panel">
+                    <li id="cliff-right" class="statistic">
+                      <img class='dashboard-icon' src="./images/cliff-right.jpg" />
+                      <h5 class='statistic-header'>&nbsp;Cliff Right</h5>
+                      <span id="cliff-right-data"></span>
+                    </li>
+                  </div>
+                </div>
+                <div class="col s12 m6">
+                  <div class="card-panel">
+                    <li id="bump-left" class="statistic">
+                      <img class='dashboard-icon' src="./images/bump.png" />
+                      <h5 class='statistic-header'>&nbsp;Bump Left</h5>
+                      <span id="bump-left-data"></span>
+                    </li>
+                  </div>
+                </div>
+                <div class="col s12 m6">
+                  <div class="card-panel">
+                    <li id="bump-right" class="statistic">
+                      <img class='dashboard-icon' src="./images/bump.png" />
+                      <h5 class='statistic-header'>&nbsp;Bump Right</h5>
+                      <span id="bump-right-data"></span>
+                    </li>
+                  </div>
+                </div>
+                <!--<div class="col s4">
             <li id="wall" class="statistic">
               <img class='dashboard-icon' src="./images/wall.png" />
               <h5 class='statistic-header'>&nbsp;Wall</h5>
               <span id="wall-data"></span>
             </li>
             </div>-->
-          <div class="col s12">
-            <li id="velocity" class="statistic">
-              Velocity:
-              <span id="velocity-data"></span>
-            </li>
+                <div class="col s12 m2">
+                  <div class="card-panel">
+                    <li id="light-bump-left" class="statistic">
+                      <h6 class='statistic-header'>&nbsp;LB Left</h6>
+                      <span id="light-bump-left-data"></span>
+                    </li>
+                  </div>
+                </div>
+                <div class="col s12 m2">
+                  <div class="card-panel">
+                    <li id="light-bump-front-left" class="statistic">
+                      <h6 class='statistic-header'>&nbsp;LB Ft Left</h6>
+                      <span id="light-bump-front-left-data" class='light-bump'></span>
+                    </li>
+                  </div>
+                </div>
+                <div class="col s12 m2">
+                  <div class="card-panel">
+                    <li id="light-bump-center-left" class="statistic">
+                      <h6 class='statistic-header'>&nbsp;LB Cen Left</h6>
+                      <span id="light-bump-center-left-data" class='light-bump'></span>
+                    </li>
+                  </div>
+                </div>
+                <div class="col s12 m2">
+                  <div class="card-panel">
+                    <li id="light-bump-center-right" class="statistic">
+                      <h6 class='statistic-header'>&nbsp;LB Cen Right</h6>
+                      <span id="light-bump-center-right-data" class='light-bump'></span>
+                    </li>
+                  </div>
+                </div>
+                <div class="col s12 m2">
+                  <div class="card-panel">
+                    <li id="light-bump-front-right" class="statistic">
+                      <h6 class='statistic-header'>&nbsp;LB Ft Right</h6>
+                      <span id="light-bump-front-right-data" class='light-bump'></span>
+                    </li>
+                  </div>
+                </div>
+                <div class="col s12 m2">
+                  <div class="card-panel">
+                    <li id="light-bump-right" class="statistic">
+                      <h6 class='statistic-header'>&nbsp;LB Right</h6>
+                      <span id="light-bump-right-data" class='light-bump'></span>
+                    </li>
+                  </div>
+                </div>
+              </ul>
+            </div>
           </div>
-          <div class="col s2">
-            <li id="light-bump-left" class="statistic">
-              <h6 class='statistic-header'>&nbsp;LB Left</h6>
-              <span id="light-bump-left-data"></span>
-            </li>
-          </div>
-          <div class="col s2">
-            <li id="light-bump-front-left" class="statistic">
-              <h6 class='statistic-header'>&nbsp;LB Ft Left</h6>
-              <span id="light-bump-front-left-data" class='light-bump'></span>
-            </li>
-          </div>
-          <div class="col s2">
-            <li id="light-bump-center-left" class="statistic">
-              <h6 class='statistic-header'>&nbsp;LB Cen Left</h6>
-              <span id="light-bump-center-left-data" class='light-bump'></span>
-            </li>
-          </div>
-          <div class="col s2">
-            <li id="light-bump-center-right" class="statistic">
-              <h6 class='statistic-header'>&nbsp;LB Cen Right</h6>
-              <span id="light-bump-center-right-data" class='light-bump'></span>
-            </li>
-          </div>
-          <div class="col s2">
-            <li id="light-bump-front-right" class="statistic">
-              <h6 class='statistic-header'>&nbsp;LB Ft. Right</h6>
-              <span id="light-bump-front-right-data" class='light-bump'></span>
-            </li>
-          </div>
-          <div class="col s2">
-            <li id="light-bump-right" class="statistic">
-              <h6 class='statistic-header'>&nbsp;LB Right</h6>
-              <span id="light-bump-right-data" class='light-bump'></span>
-            </li>
-          </div>
-          <div class="col s6">
-            <li id="left-encoder" class="statistic">
-              <h5 class='statistic-header'>&nbsp;Left Encoder</h5>
-              <span id="left-encoder-data"></span>
-            </li>
-          </div>
-          <div class="col s6">
-            <li id="right-encoder" class="statistic">
-              <h5 class='statistic-header'>&nbsp;Right Encoder</h5>
-              <span id="right-encoder-data"></span>
-            </li>
-          </div>
-        </ul>
-      </div>
-    </div>
-
+        </div>
+      </li>
+    </ul>
       <!-- campion changes below -->
 
     <div style="position: relative;">
@@ -195,150 +238,28 @@
         <canvas id="text_layer" style="position: absolute; left: 0; top: 0; z-index: 2; border:1px solid #d3d3d3;"></canvas> -->
     </div>
 
-
   </div>
 
   <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="
 https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
   <script type="text/javascript">
-    console.log('begin');
     var socket = io();
 
-    console.log('socket begins');
-
-    // fetch('/currentData').then(function (response) { return response.text() }).then(function (body) {
-    //     console.log(body);
-    //   });
     var lastAngle = 0;
     var lastEncLeft = 0;
     var lastEncRight = 0;
     var moving = false;
-    console.log('test');
-    // socket.emit('reset-robot', function (data) {
-    //   console.log('reset-robot')
-    // });
-    // socket.emit('reset-robot', function(data) {
-    //   console.log(data);
-    //   console.log('resetted');
-    // });
-    // function drawWithUpdatedData() {
-    //   fetch('currentPos')
-    //             .then(res => {
-    //               console.log('got response');
-    //             return res.json() })
-    //             .then(body => {
-    //               console.log('getting request')
-    //             console.log(body); 
-    //             drawStep(body.distance, 0, body.angle, 'quick', 'run');
-    //             console.log('drawn');
-    //           });
-    // }
-    // document.getElementById('cliff-left-data').style.color = 'red';
-    // document.getElementById('cliff-left-data').innerHTML = "<span class='warning fade-in'>!</span>"
-    document.getElementById('cliff-left-data').innerHTML = "<span style='color:red;' class='warning fade-in'>!</span>";
-    document.getElementById('cliff-front-left-data').innerHTML = "<span style='color:red;' class='warning fade-in'>!</span>";
-    document.getElementById('cliff-front-right-data').innerHTML = "<span style='color:red;' class='warning fade-in'>!</span>";
-    document.getElementById('cliff-right-data').innerHTML = "<span style='color:red;' class='warning fade-in'>!</span>";
-    document.getElementById('bump-left-data').innerHTML = "<span style='color:red;' class='warning fade-in'>!</span>";
-    document.getElementById('bump-right-data').innerHTML = "<span style='color:red;' class='warning fade-in'>!</span>";
-    document.getElementById('light-bump-left-data').innerHTML = "<span style='color:red;' class='warning fade-in'>!</span>";
-    document.getElementById('light-bump-front-left-data').innerHTML = "<span style='color:red;' class='warning fade-in'>!</span>";
-    //#light-bump-center-left-data, #light-bump-center-right-data, #light-bump-front-right-data, #light-bump-right-data 
-    document.getElementById('light-bump-center-left-data').innerHTML = "<span style='color:red;' class='warning fade-in'>!</span>";
-    document.getElementById('light-bump-center-right-data').innerHTML = "<span style='color:red;' class='warning fade-in'>!</span>";
-    document.getElementById('light-bump-front-right-data').innerHTML = "<span style='color:red;' class='warning fade-in'>!</span>";
-    document.getElementById('light-bump-right-data').innerHTML = "<span style='color:green' fade-in'><i class='fa fa-check'></i></span>";
+
     document.getElementById('stop-driving-btn').onclick = function () {
       socket.emit('stop-moving', function (data) {
         console.log('stop')
       });
     }
 
-    document.getElementById('angle-data').innerHTML = 50;
-    document.getElementById('angle-data').innerHTML += '&nbsp<i class="red-arr fa fa-arrow-down" aria-hidden="true"></i>';
-
-    document.getElementById('distance-data').innerHTML = 50;
-    document.getElementById('distance-data').innerHTML += '&nbsp;mm';
-
-    document.getElementById('left-encoder-data').innerHTML += '20000&nbsp<i class="green-arr fa fa-arrow-up" aria-hidden="true"></i>';
-    document.getElementById('right-encoder-data').innerHTML += '50000&nbsp<i class="green-arr fa fa-arrow-up" aria-hidden="true"></i>';
-    // document.getElementById('light-bump-left-data').innerHTML = call.lightBumpLeft;;
     document.getElementById("ctrl-arr-up").onclick = function () {
-            var payload = {
-        "id": "8ccb9659-788d-4fea-a2d6-6c510b02893c",
-        "timestamp": "2017-03-04T17:34:34.916Z",
-        "lang": "en",
-        "result": {
-          "source": "agent",
-          "resolvedQuery": "move forward 2",
-          "action": "move",
-          "actionIncomplete": false,
-          "parameters": {
-            "direction": "forward",
-            "distance": "2"
-          },
-          "contexts": [],
-          "metadata": {
-            "intentId": "1eb5d3e2-9674-4ae8-9032-fb9c886813d9",
-            "webhookUsed": "true",
-            "webhookForSlotFillingUsed": "false",
-            "intentName": "move"
-          },
-          "fulfillment": {
-            "speech": "moving",
-            "messages": [
-              {
-                "type": 0,
-                "speech": "moving"
-              }
-            ]
-          },
-          "score": 1
-        },
-        "status": {
-          "code": 206,
-          "errorType": "partial_content",
-          "errorDetails": "Webhook call failed. Error message: org.springframework.web.client.RestClientException: Could not extract response: no suitable HttpMessageConverter found for response type [class com.speaktoit.api.server.webhook.model.WebhookResponse] and content type [text/html;charset=utf-8] ErrorId: e7acc75e-7fcc-4966-b108-26a6b334c66a"
-        },
-        "sessionId": "bed01bd8-c777-42ab-ae4a-15e9c6551d20"
-      }
-      var formData  = new FormData();
-
-  for(name in payload) {
-    formData.append(name, payload[name]);
-  }
-// fetch('https://e3438682.ngrok.io', {
-// 	method: 'post',
-// 	body: JSON.stringify({
-// 		email: "Hello",
-// 		answer: "World"
-//   })
-// });
-  // fetch('https://e3438682.ngrok.io', {
-  //   // mode: 'no-cors',
-  //   method: 'POST',
-  //   body: formData
-  // }).then(function (res) { return res.json(); }).then(function (data){
-  //   console.log('hey');
-  //   alert( JSON.stringify( ({hello: "world"})
-  //    ) ) }).catch (function (error) {;
-      // var data = new FormData();
-      // console.log('payload:', payload)
-      // data.append("json", JSON.stringify(payload));
-      // console.log('data:',data);
-      //https://e3438682.ngrok.io
-    //   //https://b1873d15.ngrok.io
-    //   fetch("https://e3438682.ngrok.io",
-    //           { method: "POST", headers: {
-    //     'Accept': 'application/json, text/plain, */*',
-    //     'Content-Type': 'application/json'
-    // }, body: data }).then(function (res) { return res.json(); }).then(function (data){ alert( JSON.stringify( data ) ) }).catch (function (error) {
-    // console.log('Request failed', error);
-// });
-
-      console.log('clicked')
       socket.emit("move-up", function (data) {
         moving = true;
       });
@@ -368,15 +289,12 @@ https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
     document.getElementById("stop-driving-btn").onclick = function () {
       socket.emit("stop-moving", function (data) {
         if (moving) {
-          // drawWithUpdatedData();
           moving = false;
         }
       });
     }
     socket.on('angle distance changed', function (call) {
       console.log('angle distance is changing');
-      // drawStep(call.distance, 0, call.angle, 'quick', 'run');
-      // console.log('distance:', distance);
     });
 
 
@@ -413,7 +331,7 @@ https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
         document.getElementById('battery-data').innerHTML = call.chargeState;
 
       if (call.distance)
-        document.getElementById('distance-data').innerHTML = call.distance;
+        document.getElementById('distance-data').innerHTML = call.distance + '&nbsp;mm';
 
       if (call.battery)
         document.getElementById('battery-data').innerHTML = call.battery;
@@ -447,23 +365,11 @@ https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
 
       if (call.angle) {
         document.getElementById('angle-data').innerHTML = call.angle;
-        // console.log(lastAngle, call.angle)
-        if (lastAngle < call.angle) {
-          // console.log('lastAngle < call.angle')
-          document.getElementById('angle-data').innerHTML += '&nbsp<i class="green-arr fa fa-arrow-up" aria-hidden="true"></i>';
-        }
-        else if (lastAngle > call.angle) {
-          // console.log('lastAngle > call.angle')
-          document.getElementById('angle-data').innerHTML += '&nbsp<i class="red-arr fa fa-arrow-down" aria-hidden="true"></i>';
-        }
-        lastAngle = call.angle;
       }
-
 
       var warning = "<span style='color:red;' class='warning'>!</span>";
       var safe = "<span style='color:green' fade-in'><i class='fa fa-check'></i></span>";
       if (call.cliffLeft) {
-        // document.getElementById('cliff-left-data').innerHTML = "call.cliffLeft.toString();"
         if (booleans[call.cliffLeft]) {
           document.getElementById('cliff-left-data').innerHTML = warning;
         } else {
@@ -511,9 +417,6 @@ https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
         }
       }
 
-      // if (call.wall)
-      // document.getElementById('wall-data').innerHTML = call.wall.toString();
-
       if (call.velocity)
         document.getElementById('velocity-data').innerHTML = call.velocity;
 
@@ -542,48 +445,35 @@ https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
         if (!booleans[call.lightBumpFrontLeft])
           document.getElementById('light-bump-front-left-data').innerHTML = safe;
       }
-      // if (call.lightBumpFrontLeft) {
-      //   document.getElementById('light-bump-front-left-data').innerHTML = call.lightBumpFrontLeft;
-      // }
+
       if (booleans[call.lightBumpCenterLeft]) {
         document.getElementById('light-bump-center-left-data').innerHTML = 'WALL';
       } else {
         if (!booleans[call.lightBumperLeft])
-        document.getElementById('light-bump-center-left-data').innerHTML = safe;
+          document.getElementById('light-bump-center-left-data').innerHTML = safe;
       }
 
-      // if (call.lightBumpCenterLeft) {
-      //   document.getElementById('light-bump-center-left-data').innerHTML = call.lightBumpCenterLeft;
-      // }
-
-       if (booleans[call.lightBumpCenterRight]) {
+      if (booleans[call.lightBumpCenterRight]) {
         document.getElementById('light-bump-center-right-data').innerHTML = 'WALL';
       } else {
         if (!booleans[call.lightBumpCenterRight])
-        document.getElementById('light-bump-center-right-data').innerHTML = safe;
+          document.getElementById('light-bump-center-right-data').innerHTML = safe;
       }
-      // if (call.bumpCenterRight) {
-      //   document.getElementById('light-bump-center-right-data').innerHTML = call.lightBumpCenterRight;
-      // }
-      console.log('call',call);
+
+      console.log('call', call);
       if (booleans[call.lightBumpFrontRight]) {
         document.getElementById('light-bump-front-right-data').innerHTML = 'WALL';
       } else {
         if (!booleans[call.lightBumpFrontRight])
           document.getElementById('light-bump-front-right-data').innerHTML = safe;
       }
-      // if (call.lightBumpFrontRight) {
-      //   document.getElementById('light-bump-front-right-data').innerHTML = call.lightBumpFrontRight;
-      // }
+
       if (booleans[call.lightBumpRight]) {
         document.getElementById('light-bump-right-data').innerHTML = 'WALL';
       } else {
         if (!booleans[call.lightBumpRight])
           document.getElementById('light-bump-right-data').innerHTML = safe;
       }
-      // if (call.bumpRight) {
-      //   document.getElementById('light-bump-right-data').innerHTML = call.lightBumpRight;
-      // }
 
       if (call.rightEncoder) {
         document.getElementById('right-encoder-data').innerHTML = call.rightEncoder;
