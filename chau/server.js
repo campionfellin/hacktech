@@ -30,7 +30,7 @@ app.post('/', function (req, res) {
     // wall (doesn't work)
     // velocity of each drive wheel
     // left/right encoder counts
-    res.json({ status: "success" });
+    // res.json({ status: "success" });
     // console.log('req.body:', req.body);
     io.emit('data has been sent', req.body);
 });
@@ -53,12 +53,22 @@ var options = {
         cliffRight: false,
         bumpLeft: false,
         bumpRight: false,
-        wall: false,
+        lightBumpLeft: false,
+        lightBumpFrontLeft: false,
+        lightBumpCenterLeft: false,
+        lightBumpCenterRight: false,
+        lightBumpFrontRight: false,
+        lightBumpRight: false,
+        wall: false, // unnecessary
         velocity: 0,
         leftEncoder: 0,
         rightEncoder: 0,
     }
 }
+
+app.get('/currentPos', function (req, res) {
+    res.json(options.form);
+});
 
 function start() {
     create.prompt(function (p) { create.open(p, main) });
@@ -83,7 +93,7 @@ function main(r) {
         if (robot.data.charger || robot.data.docked) { robot.start(); run = 0; }
         else {
             //  robot.play(0);
-            driveLogic();
+            // driveLogic();
         } robot.onChange = onchange;
     }
 
@@ -100,8 +110,15 @@ function main(r) {
             options.form.cliffRight = chg.cliffRight || false;
             options.form.dropLeft = chg.dropLeft || false;
             options.form.dropRight = chg.dropRight || false;
-            options.form.leftEncoder = robot.data.encoderLeft;
-            options.form.rightEncoder = robot.data.encoderRight;
+            options.form.leftEncoder = robot.data.encoderLeft || 0;
+            options.form.rightEncoder = robot.data.encoderRight || 0;
+            options.form.lightBumpLeft = chg.lightBumpLeft || false;
+            options.form.lightBumpFrontLeft = chg.lightBumpFrontLeft || false;
+            options.form.lightBumpCenterLeft = chg.lightBumpCenterLeft || false;
+            options.form.lightBumpCenterRight = chg.lightBumpCenterRight || false;
+            options.form.lightBumpRight = chg.lightBumpRight || false;
+            options.form.chargeState = String(Math.round((robot.data.charge / robot.data.maxCharge) * 100)) + "%" || 0;
+            console.log(robot.data)
 
             // send data after all possible changes
             request(options, function (error, response, body) {
@@ -182,10 +199,15 @@ function main(r) {
     }
 
     var angle = 0; //Count Angle Changes Using Encoders:
+    var distance = 0;
     robot.onMotion = function () {
         angle += robot.delta.angle; console.log("Angle:", angle);
+        distance  += robot.delta.distance; console.log("Distance:", distance);
 
         options.form.angle = angle;
+        options.form.distance =  distance;
+        var data = { angle: angle, distance: distance }
+        // io.emit('angle distance changed', data);
         request(options, function (error, response, body) {
             console.log('sending request')
             if (!error && response.statusCode == 200) {
@@ -211,27 +233,90 @@ function main(r) {
             console.log('user disconnected');
         });
 
+        // socket.on('reset-robot'), () => {
+            // options = {
+            //     url: 'http://localhost:3000',
+            //     method: 'POST',
+            //     headers: headers,
+            //     form: {
+            //         distance: 0,
+            //         angle: 0,
+            //         battery: 0,
+            //         cliffLeft: false,
+            //         cliffFrontLeft: false,
+            //         cliffFromRight: false,
+            //         cliffRight: false,
+            //         bumpLeft: false,
+            //         bumpRight: false,
+            //         lightBumpLeft: false,
+            //         lightBumpFrontLeft: false,
+            //         lightBumpCenterLeft: false,
+            //         lightBumpCenterRight: false,
+            //         lightBumpFrontRight: false,
+            //         lightBumpRight: false,
+            //         wall: false, // unnecessary
+            //         velocity: 0,
+            //         leftEncoder: 0,
+            //         rightEncoder: 0,
+            //     }
+            // }
+        // }
+        socket.on('reset-robot', () => {
+            console.log('reset robot')
+            options = options = {
+                url: 'http://localhost:3000',
+                method: 'POST',
+                headers: headers,
+                form: {
+                    distance: 0,
+                    angle: 0,
+                    battery: 0,
+                    cliffLeft: false,
+                    cliffFrontLeft: false,
+                    cliffFromRight: false,
+                    cliffRight: false,
+                    bumpLeft: false,
+                    bumpRight: false,
+                    chargeState: 0,
+                    lightBumpLeft: false,
+                    lightBumpFrontLeft: false,
+                    lightBumpCenterLeft: false,
+                    lightBumpCenterRight: false,
+                    lightBumpFrontRight: false,
+                    lightBumpRight: false,
+                    wall: false, // unnecessary
+                    velocity: 0,
+                    leftEncoder: 0,
+                    rightEncoder: 0,
+                }
+            }
+        })
+
         socket.on('move-up', () => {
             console.log('move up')
             robot.drive(100, 32767);
-            robot.play(0);
         });
 
         socket.on('turn-left', () => {
             console.log('turn left');
-            turnRobot();
-            // robot.drive(10, -1);
+            // turnRobot();
+            robot.drive(-100, -100);
         })
 
         socket.on('turn-right', () => {
             console.log('turn right')
-            turnRobot();
-            // robot.drive(10, 1);
+            // turnRobot();
+            robot.drive(-100, 100);
         });
 
         socket.on('stop-turning', () => {
             console.log('stop turn')
             robot.driveSpeed(0, 0); 
+        })
+
+        socket.on('stop-moving', () => {
+            console.log('stop moving');
+            robot.driveSpeed(0, 0);
         })
         
     });

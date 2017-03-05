@@ -1,14 +1,13 @@
  html {}
  
  .dashboard-icon {
-     width: 50px;
-     height: 50px;
-     vertical-align: bottom;
+     width: 25px;
+     height: 25px;
  }
  
  #controls {
      position: relative;
-     width: 200px;
+     width: 300px;
      height: 200px;
  }
  
@@ -20,7 +19,7 @@
     padding-left: 20px;
 }
  #ctrl-arr-right {
-     padding-left: 44px;
+     margin-left: -2px;
  }
 
  .green-arr {
@@ -31,11 +30,64 @@
      color: red;
  }
 
+.statistic {
+    margin: 0;
+    border: 1px dashed black;
+    /*padding: 1em;*/
+}
+ .statistic {
+     text-align: center;
+     height: 150px;
+ }
+
+ .statistic span {
+     display: block;
+     padding: 25px 0 0 25px;
+     font-size: 1.5em;
+ }
+
+ .statistic span i {
+     font-size: 1.5em;
+ }
+
+ #left-encoder, #right-encoder {
+     text-align: center;    
+ }
+
+ @keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.warning, #cliff-left-data, #cliff-right-data, #cliff-front-left-data, #cliff-front-right-data, #bump-left-data, #bump-right-data, #light-bump-left-data, #light-bump-front-left-data, #light-bump-center-left-data, #light-bump-center-right-data, #light-bump-front-right-data, #light-bump-right-data {
+    font-size: 3em;
+    padding: 0 !important;
+    text-align: center;
+}
+
+#distance-data {
+    font-weight: bold;
+}
+
+.fade-in {
+    animation: fadeIn 2s;
+}
+
+.statistic-header {
+    padding-top: 15px;
+    display: inline-block;
+    margin: 0;
+}
+
  /* copy */
  svg {
      border-radius: 25px;
-     height: 300px;
-     width: 300px;
+     height: 150px;
+     width: 150px;
  }
  
  circle {
@@ -70,6 +122,13 @@
      stroke-dashoffset: -17.75;
      /* offset of  arc from start point (1/2 of arc length) */
  }
+
+.light-bump span {
+    padding: 0;
+}
+ .fa-check {
+     font-size: 60px !important;
+ }
  
  #top-right {
      stroke: green;
@@ -79,3 +138,18 @@
      /* offset of arc from start point (1/2 arc length + 3/4 circumference) */
  }
  /* end copy */
+
+ #my-canvas {
+     width: 100%;
+     margin: 0 auto;
+     text-align: center;
+     padding-left: 200px;
+ }
+
+ canvas {
+     display: inline;
+ }
+
+ #statistics-list {
+     display: inline-block;
+ }
