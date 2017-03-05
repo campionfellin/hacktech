@@ -5,9 +5,17 @@ var io = require('socket.io')(server);
 var request = require('request');
 var robot2 = require('robotjs');
 var ApiAiAssistant = require('actions-on-google').ApiAiAssistant;
+
+var cors = require('cors');
+
+
+
 var timer;
 
+
 app.set('port', process.env.PORT || 3000);
+
+app.use(cors());
 //var server = app.listen(3000, () => {
   //  console.log('Example app listening on port 3000!')
 //});
@@ -15,7 +23,7 @@ var bodyParser = require('body-parser');
 
 var commands = require('./commands');
 
-var robot, turnRobot, stopTurn, stopLogic, driveLogic, turnLogic;
+var robot, turnRobot, stopTurn, stopLogic, driveLogic, turnLogic, driveBack;
 var driveStraight = 32768;
 
 app.use(express.static(__dirname + '/public'));
@@ -37,9 +45,9 @@ var hasStarted = false;
 start();
 app.post('/', function(request, response) {
 	const assistant = new ApiAiAssistant({request: request, response: response});
-	//console.log(request.body.result);
+	console.log(request.body);
 	//console.log(request.body.result.action); //for just the action
-
+	var command = "";
 	myCommand = "";
 	if (request.body.result) {
 
@@ -57,12 +65,17 @@ app.post('/', function(request, response) {
 			var direction = request.body.result.parameters.direction;
 			var degrees = request.body.result.parameters.degrees;
 			commands.turn(direction, degrees);
-			degrees = (degrees / 360) * 2000;
-			console.log(degrees);
-			turnLogic(degrees);
+			degrees2 = (degrees / 360) * 2000;
+			console.log(degrees2);
+			if (direction == "left") {
+				turnLogic(-1);
+			} else {
+				turnLogic(1);
+			}
+
 			timer=setTimeout(function() {
 				stopLogic();
-			}, 10000);
+			}, (degrees / 55)*1000);
 			
 			command="Affirmative. turning "+degrees+".";
 		} else if (action == "move") {
@@ -83,14 +96,48 @@ app.post('/', function(request, response) {
 			command="Affirmative. moving "+direction+" for "+distance + " seconds.";
 		}
 	}
-	 assistant.ask(command+' What is your next command?',
-        ['Say a command', 'command me', 'instructions']);
+		if (command != "") {
+	 		assistant.ask(command+' What is your next command?',
+        	['Say a command', 'command me', 'instructions']);
+		}
+
 	//response.send("");
 });
 
+var ignore = false;
 app.post('/update', function(request, response) {
 	//console.log("this is the data");
 	//console.log(request.body);
+
+	//console.log(request.body.bumpLeft);
+	//console.log(request.body.bumpRight);
+	if ((request.body.bumpLeft == "true" || request.body.bumpRight == "true") && !ignore) {
+
+
+		ignore = true;
+		driveBack();
+
+		timer=setTimeout(function() {
+			stopLogic();
+			
+			console.log("I was bumped!");
+			if (request.body.bumpLeft == "true") {
+				turnLogic(1);
+			} else {
+				turnLogic(-1);
+			}
+			timer=setTimeout(function() {
+				ignore = false;
+				stopLogic();
+			}, (90 / 55)*1000);
+		}, 500);
+
+
+		
+	}
+
+
+
 
 });
 
@@ -219,13 +266,22 @@ function main(r) {
     	robot.drive(0,0);
     };
 
-    turnLogic = function (degrees) {
-        console.log("turnlogic "+degrees);
+    turnLogic = function (direction) {
+        console.log("turnlogic ");
         clearTimer();
-        robot.driveSpeed(-100,100);
+        if (direction < 0) {
+ 			robot.driveSpeed(-100,100);
+        } else {
+        	robot.driveSpeed(100,-100);
+        }
+       
         //robot.drive(20, degrees);
     	//turnRobot();
     };
+
+    driveBack = function() {
+    	robot.driveSpeed(-50, -50);
+    }
 
     //Logic to Start and Stop Moving Robot:
     driveLogic = function () {
