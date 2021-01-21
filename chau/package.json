@@ -9,6 +9,6 @@
     "create2": "^1.2.3",
     "express": "^4.15.0",
     "request": "^2.80.0",
-    "socket.io": "^1.7.3"
+    "socket.io": "^2.4.0"
   }
 }
